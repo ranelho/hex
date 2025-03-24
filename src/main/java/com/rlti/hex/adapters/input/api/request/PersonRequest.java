@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record PersonRequest(
         @NotBlank(message = "Name is required")
@@ -12,6 +13,7 @@ public record PersonRequest(
         @CPF(message = "Invalid CPF")
         String cpf,
         @Past(message = "Invalid birth date")
-        LocalDate birthDate
+        LocalDate birthDate,
+        List<AddressRequest> addresses
 ) {
 }

@@ -1,8 +1,11 @@
 package com.rlti.hex.application.core.domain;
 
+import java.util.List;
+
 public class Person {
     Long id;
     String name;
+    List<Address> addresses;
 
     public Person(){}
 
@@ -20,5 +23,13 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }
