@@ -16,6 +16,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 public class FisicaEntity extends PersonEntity {
     @Column(name = "cpf", nullable = false, unique = true)
-    String cpf;
-    LocalDate birthDate;
+    private String cpf;
+    private LocalDate birthDate;
+    private String nameMother;
+    private String nameFather;
 }

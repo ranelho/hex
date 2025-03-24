@@ -9,6 +9,8 @@ import com.rlti.hex.application.port.output.InsertPersonOutputPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -32,5 +34,11 @@ public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPo
     public Optional<Fisica> find(Long id) {
         return fisicaJpaRepository.findById(id)
                 .map(entity -> modelMapper.map(entity, Fisica.class));
+    }
+
+    @Override
+    public Page<Fisica> findAll(Pageable pageable) {
+        var fisicaPage = fisicaJpaRepository.findAll(pageable);
+        return fisicaPage.map(entity -> modelMapper.map(entity, Fisica.class));
     }
 }

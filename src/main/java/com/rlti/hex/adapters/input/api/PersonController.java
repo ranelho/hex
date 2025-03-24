@@ -6,6 +6,8 @@ import com.rlti.hex.application.port.input.FindPersonInputPort;
 import com.rlti.hex.application.port.input.InsertPersonInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,6 +32,16 @@ public class PersonController {
     @GetMapping("/{id}")
     public ResponseEntity<PersonResponse> findPerson(@PathVariable Long id) {
         var response = findPersonInputPort.find(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Page<PersonResponse>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size
+    ) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        var response = findPersonInputPort.findAll(pageable);
         return ResponseEntity.ok(response);
     }
 }

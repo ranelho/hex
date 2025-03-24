@@ -14,6 +14,8 @@ public record PersonRequest(
         String cpf,
         @Past(message = "Invalid birth date")
         LocalDate birthDate,
+        String nameMother,
+        String nameFather,
         List<AddressRequest> addresses
 ) {
 }

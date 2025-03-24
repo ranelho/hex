@@ -7,6 +7,8 @@ import java.time.LocalDate;
 public class Fisica extends Person {
     private String cpf;
     private LocalDate birthDate;
+    private String nameMother;
+    private String nameFather;
 
     public Fisica() {
     }
@@ -28,6 +30,22 @@ public class Fisica extends Person {
 
     public String getCpf() {
         return cpf;
+    }
+
+    public String getNameMother() {
+        return nameMother;
+    }
+
+    public void setNameMother(String nameMother) {
+        this.nameMother = nameMother;
+    }
+
+    public String getNameFather() {
+        return nameFather;
+    }
+
+    public void setNameFather(String nameFather) {
+        this.nameFather = nameFather;
     }
 
     public void setCpf(String cpf) {
