@@ -1,6 +1,7 @@
 package com.rlti.hex.application.core.domain;
 
 import com.rlti.hex.adapters.input.api.request.PersonRequest;
+import com.rlti.hex.adapters.input.api.request.PersonUpdateRequest;
 
 import java.time.LocalDate;
 
@@ -18,6 +19,8 @@ public class Fisica extends Person {
         this.name = request.name();
         this.cpf = request.cpf();
         this.birthDate = request.birthDate();
+        this.nameMother = request.nameMother();
+        this.nameFather = request.nameFather();
 
         this.addresses = request.addresses().stream()
                 .map(addressRequest -> {
@@ -26,6 +29,13 @@ public class Fisica extends Person {
                     return address;
                 })
                 .toList();
+    }
+
+    public void update(PersonUpdateRequest request) {
+        this.birthDate = request.birthDate();
+        this.name = request.name();
+        this.nameMother = request.nameMother();
+        this.nameFather = request.nameFather();
     }
 
     public String getCpf() {
@@ -59,4 +69,6 @@ public class Fisica extends Person {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+
+
 }

@@ -24,7 +24,7 @@ public class LoggingAspect {
         String packageName = joinPoint.getTarget().getClass().getPackageName();
 
         long startTime = System.currentTimeMillis();
-        log.info("[startTime] {} - {}", className, methodName);
+        log.info("[start] {} - {}", className, methodName);
 
         try {
             var result = joinPoint.proceed();

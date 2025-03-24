@@ -1,9 +1,11 @@
 package com.rlti.hex.adapters.input.api;
 
 import com.rlti.hex.adapters.input.api.request.PersonRequest;
+import com.rlti.hex.adapters.input.api.request.PersonUpdateRequest;
 import com.rlti.hex.adapters.input.api.response.PersonResponse;
 import com.rlti.hex.application.port.input.FindPersonInputPort;
 import com.rlti.hex.application.port.input.InsertPersonInputPort;
+import com.rlti.hex.application.port.input.UpdatePersonInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ public class PersonController {
 
     private final InsertPersonInputPort insertPersonInputPort;
     private final FindPersonInputPort findPersonInputPort;
+    private final UpdatePersonInputPort updatePersonInputPort;
 
     @PostMapping
     public ResponseEntity<PersonResponse> createPerson(@Valid @RequestBody PersonRequest request) {
@@ -42,6 +45,12 @@ public class PersonController {
     ) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         var response = findPersonInputPort.findAll(pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PersonResponse> updatePerson(@PathVariable Long id, @Valid @RequestBody PersonUpdateRequest request) {
+        var response = updatePersonInputPort.update(id, request);
         return ResponseEntity.ok(response);
     }
 }

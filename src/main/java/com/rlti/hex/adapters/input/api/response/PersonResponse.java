@@ -14,6 +14,8 @@ public record PersonResponse(
         String name,
         String cpf,
         LocalDate birthDate,
+        String nameMother,
+        String nameFather,
         List<AddressResponse> addresses
 ) {
     public PersonResponse(Fisica person) {
@@ -22,6 +24,8 @@ public record PersonResponse(
                 person.getName(),
                 person.getCpf(),
                 person.getBirthDate(),
+                person.getNameMother(),
+                person.getNameFather(),
                 Optional.ofNullable(person.getAddresses())
                         .map(AddressResponse::convertList)
                         .orElse(List.of())
