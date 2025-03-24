@@ -1,7 +1,6 @@
 package com.rlti.hex.adapters.input.api.response;
 
 import com.rlti.hex.application.core.domain.Fisica;
-import com.rlti.hex.application.core.domain.Person;
 
 import java.time.LocalDate;
 

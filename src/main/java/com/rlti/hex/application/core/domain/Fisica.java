@@ -24,4 +24,12 @@ public class Fisica extends Person {
     public LocalDate getBirthDate() {
         return birthDate;
     }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 }
