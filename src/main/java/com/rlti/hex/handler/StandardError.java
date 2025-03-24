@@ -1,7 +1,9 @@
 package com.rlti.hex.handler;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
+@Getter
 @Schema(name = "StandardError", description = "Schema padrão para erros")
 public class StandardError {
     private String field;
@@ -12,17 +14,8 @@ public class StandardError {
         this.message = message;
     }
 
-    // Getters e Setters
-    public String getField() {
-        return field;
-    }
-
     public void setField(String field) {
         this.field = field;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public void setMessage(String message) {
