@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+server:
+  servlet:
+    context-path: /hex/api
+    multipart:
+      enabled: true
+      max-file-size: 1MB
+      max-request-size: 1MB
+      file-size-threshold: 0
+      location: ~/temp/
+
+springdoc:
+  swagger-ui:
+    path: /public/swagger
