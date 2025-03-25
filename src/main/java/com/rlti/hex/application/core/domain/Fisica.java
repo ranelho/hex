@@ -21,14 +21,14 @@ public class Fisica extends Person {
         this.birthDate = request.birthDate();
         this.nameMother = request.nameMother();
         this.nameFather = request.nameFather();
-
-        this.addresses = request.addresses().stream()
-                .map(addressRequest -> {
-                    Address address = new Address(addressRequest);
-                    address.setPerson(this);
-                    return address;
-                })
-                .toList();
+        if (request.addresses() != null)
+            this.addresses = request.addresses().stream()
+                    .map(addressRequest -> {
+                        Address address = new Address(addressRequest);
+                        address.setPerson(this);
+                        return address;
+                    })
+                    .toList();
     }
 
     public void update(PersonUpdateRequest request) {
