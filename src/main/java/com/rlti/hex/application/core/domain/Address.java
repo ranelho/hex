@@ -16,6 +16,15 @@ public class Address {
     public Address() {
     }
 
+    public void update(AddressRequest request) {
+        this.street = request.street();
+        this.city = request.city();
+        this.state = request.state();
+        this.zipCode = request.zipCode();
+        this.country = request.country();
+        this.number = request.number();
+    }
+
     public Address(AddressRequest request) {
         this.street = request.street();
         this.city = request.city();
@@ -24,6 +33,17 @@ public class Address {
         this.country = request.country();
         this.number = request.number();
     }
+
+    public Address(Person person, AddressRequest request) {
+        this.person = person;
+        this.street = request.street();
+        this.city = request.city();
+        this.state = request.state();
+        this.zipCode = request.zipCode();
+        this.country = request.country();
+        this.number = request.number();
+    }
+
 
     public Long getId() {
         return id;

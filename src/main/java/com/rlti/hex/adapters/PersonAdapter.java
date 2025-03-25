@@ -2,6 +2,7 @@ package com.rlti.hex.adapters;
 
 import com.rlti.hex.adapters.output.entity.FisicaEntity;
 import com.rlti.hex.adapters.output.repository.FisicaJpaRepository;
+import com.rlti.hex.adapters.output.repository.PersonJpaRepository;
 import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.domain.Person;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPort, UpdatePersonOutputPort {
 
     private final FisicaJpaRepository fisicaJpaRepository;
+    private final PersonJpaRepository personJpaRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -41,6 +43,17 @@ public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPo
     public Page<Fisica> findAll(Pageable pageable) {
         var fisicaPage = fisicaJpaRepository.findAll(pageable);
         return fisicaPage.map(entity -> modelMapper.map(entity, Fisica.class));
+    }
+
+    @Override
+    public Optional<Person> findPerson(Long id) {
+        return personJpaRepository.findById(id)
+                .map(entity -> modelMapper.map(entity, Person.class));
+    }
+
+    @Override
+    public boolean exists(String cpf) {
+        return fisicaJpaRepository.existsByCpf(cpf);
     }
 
     @Override

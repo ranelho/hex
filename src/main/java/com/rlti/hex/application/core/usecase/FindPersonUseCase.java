@@ -7,7 +7,6 @@ import com.rlti.hex.application.port.input.FindPersonInputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
 import com.rlti.hex.config.aspect.Monitored;
 import com.rlti.hex.handler.ResourceNotFoundException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Monitored

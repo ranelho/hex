@@ -10,7 +10,9 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setFieldMatchingEnabled(true).setSkipNullEnabled(true);
+        modelMapper.getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setSkipNullEnabled(true);
         return modelMapper;
     }
 }
