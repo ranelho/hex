@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FisicaJpaRepository extends JpaRepository<FisicaEntity, Long> {
+    boolean existsByCpf(String cpf);
 }

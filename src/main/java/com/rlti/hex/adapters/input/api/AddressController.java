@@ -6,6 +6,7 @@ import com.rlti.hex.application.port.input.DeleteAddressInputPort;
 import com.rlti.hex.application.port.input.FindAddressInputPort;
 import com.rlti.hex.application.port.input.InsertAddressToPersonInputPort;
 import com.rlti.hex.application.port.input.UpdateAddressInputPort;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "Address", description = "Address API")
 @RequestMapping("/address")
 public class AddressController {
 

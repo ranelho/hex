@@ -52,6 +52,11 @@ public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPo
     }
 
     @Override
+    public boolean exists(String cpf) {
+        return fisicaJpaRepository.existsByCpf(cpf);
+    }
+
+    @Override
     public Fisica update(Fisica person) {
         var fisicaEntity = modelMapper.map(person, FisicaEntity.class);
         var updatedFisica = fisicaJpaRepository.save(fisicaEntity);

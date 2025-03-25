@@ -6,6 +6,7 @@ import com.rlti.hex.adapters.input.api.response.PersonResponse;
 import com.rlti.hex.application.port.input.FindPersonInputPort;
 import com.rlti.hex.application.port.input.InsertPersonInputPort;
 import com.rlti.hex.application.port.input.UpdatePersonInputPort;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,8 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/persons")
+@Tag(name = "Person", description = "Person API")
+@RequestMapping("/person")
 public class PersonController {
 
     private final InsertPersonInputPort insertPersonInputPort;
