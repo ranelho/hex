@@ -31,11 +31,4 @@ public record PersonResponse(
                         .orElse(List.of())
         );
     }
-
-    public static Page<PersonResponse> convertPage(Page<Fisica> persons, Pageable pageable) {
-        var personResponses = persons.stream()
-                .map(PersonResponse::new)
-                .toList();
-        return new PageImpl<>(personResponses, pageable, persons.getTotalElements());
-    }
 }

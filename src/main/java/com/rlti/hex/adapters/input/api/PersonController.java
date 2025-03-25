@@ -39,7 +39,7 @@ public class PersonController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<PersonResponse>> findAll(
+    public ResponseEntity<PageResult<PersonResponse>> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size
     ) {
