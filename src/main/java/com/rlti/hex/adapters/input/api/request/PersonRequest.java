@@ -1,5 +1,6 @@
 package com.rlti.hex.adapters.input.api.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
@@ -16,6 +17,6 @@ public record PersonRequest(
         LocalDate birthDate,
         String nameMother,
         String nameFather,
-        List<AddressRequest> addresses
+        List<@Valid AddressRequest> addresses
 ) {
 }
