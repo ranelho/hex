@@ -2,8 +2,10 @@ package com.rlti.hex.adapters.output.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 @Entity
 @Table(name = "address")
 public class AddressEntity {

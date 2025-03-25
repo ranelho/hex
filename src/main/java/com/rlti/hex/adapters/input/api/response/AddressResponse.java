@@ -1,7 +1,6 @@
 package com.rlti.hex.adapters.input.api.response;
 
 import com.rlti.hex.application.core.domain.Address;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
