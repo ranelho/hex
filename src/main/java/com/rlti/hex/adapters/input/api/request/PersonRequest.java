@@ -17,6 +17,7 @@ public record PersonRequest(
         LocalDate birthDate,
         String nameMother,
         String nameFather,
-        List<@Valid AddressRequest> addresses
+        List<@Valid AddressRequest> addresses,
+        List<@Valid ContactRequest> contacts
 ) {
 }

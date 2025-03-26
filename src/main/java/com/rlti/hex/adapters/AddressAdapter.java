@@ -8,6 +8,7 @@ import com.rlti.hex.application.port.output.FindAddressOutputPort;
 import com.rlti.hex.application.port.output.InsertAddressToPersonOutputPort;
 import com.rlti.hex.application.port.output.UpdateAddressOutputPort;
 import com.rlti.hex.config.aspect.Monitored;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class AddressAdapter implements InsertAddressToPersonOutputPort,
     private final AddressJpaRepository addressJpaRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public Address insert(Address address) {
         var addressEntity = modelMapper.map(address, AddressEntity.class);

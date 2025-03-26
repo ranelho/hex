@@ -1,14 +1,12 @@
 package com.rlti.hex.adapters.output.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,5 +20,8 @@ public class FisicaEntity extends PersonEntity {
     private LocalDate birthDate;
     private String nameMother;
     private String nameFather;
+
+    @OneToMany(mappedBy = "fisica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ContactEntity> contacts;
 }
 

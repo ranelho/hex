@@ -1,9 +1,6 @@
 package com.rlti.hex.adapters.input.api.response;
 
 import com.rlti.hex.application.core.domain.Fisica;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +13,8 @@ public record PersonResponse(
         LocalDate birthDate,
         String nameMother,
         String nameFather,
-        List<AddressResponse> addresses
+        List<AddressResponse> addresses,
+        List<ContactResponse> contacts
 ) {
     public PersonResponse(Fisica person) {
         this(
@@ -26,8 +24,13 @@ public record PersonResponse(
                 person.getBirthDate(),
                 person.getNameMother(),
                 person.getNameFather(),
+
                 Optional.ofNullable(person.getAddresses())
                         .map(AddressResponse::convertList)
+                        .orElse(List.of()),
+
+                Optional.ofNullable(person.getContacts())
+                        .map(ContactResponse::convertList)
                         .orElse(List.of())
         );
     }
