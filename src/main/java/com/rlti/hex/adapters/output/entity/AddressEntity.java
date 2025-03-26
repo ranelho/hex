@@ -20,6 +20,7 @@ public class AddressEntity {
     private String zipCode;
     private String country;
     private String number;
+    private String neighborhood;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
