@@ -7,6 +7,7 @@ public class Address {
     private String street;
     private String city;
     private String state;
+    private String neighborhood;
     private String zipCode;
     private String country;
     private String number;
@@ -23,6 +24,7 @@ public class Address {
         this.zipCode = request.zipCode();
         this.country = request.country();
         this.number = request.number();
+        this.neighborhood = request.neighborhood();
     }
 
     public Address(AddressRequest request) {
@@ -32,6 +34,7 @@ public class Address {
         this.zipCode = request.zipCode();
         this.country = request.country();
         this.number = request.number();
+        this.neighborhood = request.neighborhood();
     }
 
     public Address(Person person, AddressRequest request) {
@@ -42,6 +45,7 @@ public class Address {
         this.zipCode = request.zipCode();
         this.country = request.country();
         this.number = request.number();
+        this.neighborhood = request.neighborhood();
     }
 
 
