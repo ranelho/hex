@@ -9,15 +9,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record PersonRequest(
-        @NotBlank(message = "Name is required")
-        String name,
-        @CPF(message = "Invalid CPF")
-        String cpf,
-        @Past(message = "Invalid birth date")
-        LocalDate birthDate,
+        @NotBlank(message = "Name is required") String name,
+        @CPF(message = "Invalid CPF") String cpf,
+        @Past(message = "Invalid birth date") LocalDate birthDate,
         String nameMother,
         String nameFather,
+
         List<@Valid AddressRequest> addresses,
-        List<@Valid ContactRequest> contacts
+        List<@Valid ContactRequest> contacts,
+        List<@Valid DependentRequest> dependents
 ) {
 }

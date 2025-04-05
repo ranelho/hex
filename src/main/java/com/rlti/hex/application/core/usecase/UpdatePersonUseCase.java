@@ -1,11 +1,7 @@
 package com.rlti.hex.application.core.usecase;
 
-import com.rlti.hex.adapters.input.api.request.AddressRequest;
-import com.rlti.hex.adapters.input.api.request.ContactRequest;
 import com.rlti.hex.adapters.input.api.request.PersonUpdateRequest;
 import com.rlti.hex.adapters.input.api.response.PersonResponse;
-import com.rlti.hex.application.core.domain.Address;
-import com.rlti.hex.application.core.domain.Contact;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.UpdatePersonInputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
@@ -35,13 +31,14 @@ public class UpdatePersonUseCase implements UpdatePersonInputPort {
 
         person.update(request);
 
-        if (request.addresses() != null) {
+        if (request.addresses() != null)
             request.addresses().forEach(person::updateOrAddAddress);
-        }
 
-        if (request.contacts() != null) {
+        if (request.contacts() != null)
             request.contacts().forEach(person::updateOrAddContact);
-        }
+
+        if(request.dependents() != null)
+            request.dependents().forEach(person::updateOrAddDependent);
 
         var updatedPerson = updatePersonOutputPort.update(person);
 

@@ -1,9 +1,6 @@
 package com.rlti.hex.application.core.domain;
 
-import com.rlti.hex.adapters.input.api.request.AddressRequest;
-import com.rlti.hex.adapters.input.api.request.ContactRequest;
-import com.rlti.hex.adapters.input.api.request.PersonRequest;
-import com.rlti.hex.adapters.input.api.request.PersonUpdateRequest;
+import com.rlti.hex.adapters.input.api.request.*;
 import com.rlti.hex.handler.ResourceNotFoundException;
 
 import java.time.LocalDate;
@@ -16,6 +13,7 @@ public class Fisica extends Person {
     private String nameFather;
 
     private List<Contact> contacts;
+    private List<Dependent> dependents;
 
     public Fisica() {
     }
@@ -27,6 +25,7 @@ public class Fisica extends Person {
         this.birthDate = request.birthDate();
         this.nameMother = request.nameMother();
         this.nameFather = request.nameFather();
+
         if (request.addresses() != null)
             this.addresses = request.addresses().stream()
                     .map(addressRequest -> {
@@ -41,6 +40,15 @@ public class Fisica extends Person {
                         Contact contact = new Contact(contactRequest);
                         contact.setFisica(this);
                         return contact;
+                    })
+                    .toList();
+
+        if (request.dependents() != null)
+            this.dependents = request.dependents().stream()
+                    .map(dependentRequest -> {
+                        Dependent dependent = new Dependent(dependentRequest);
+                        dependent.setFisica(this);
+                        return dependent;
                     })
                     .toList();
     }
@@ -73,6 +81,18 @@ public class Fisica extends Person {
             existingContact.update(request);
         } else {
             this.contacts.add(new Contact(this, request));
+        }
+    }
+
+    public void updateOrAddDependent(DependentRequest request){
+        if (request.id() != null) {
+            var existingDependent = this.dependents.stream()
+                    .filter(dependent -> dependent.getId().equals(request.id()))
+                    .findFirst()
+                    .orElseThrow(() -> new ResourceNotFoundException("Dependent not found"));
+            existingDependent.update(request);
+        } else {
+            this.dependents.add(new Dependent(this, request));
         }
     }
 
@@ -114,5 +134,13 @@ public class Fisica extends Person {
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    public List<Dependent> getDependents() {
+        return dependents;
+    }
+
+    public void setDependents(List<Dependent> dependents) {
+        this.dependents = dependents;
     }
 }

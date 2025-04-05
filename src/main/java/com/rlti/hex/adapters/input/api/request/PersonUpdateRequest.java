@@ -15,6 +15,7 @@ public record PersonUpdateRequest(
         String nameMother,
         String nameFather,
         List<@Valid AddressRequest> addresses,
-        List<@Valid ContactRequest> contacts
+        List<@Valid ContactRequest> contacts,
+        List<@Valid DependentRequest> dependents
 ) {
 }
