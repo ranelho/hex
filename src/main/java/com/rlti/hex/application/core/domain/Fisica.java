@@ -8,12 +8,15 @@ import java.util.List;
 import java.util.Optional;
 
 public final class Fisica extends Person {
-    private final String cpf;
-    private final LocalDate birthDate;
-    private final String nameMother;
-    private final String nameFather;
+    private String cpf;
+    private LocalDate birthDate;
+    private String nameMother;
+    private String nameFather;
     private List<Contact> contacts;
     private List<Dependent> dependents;
+
+    public Fisica() {
+    }
 
     private Fisica(Builder builder) {
         super();
@@ -174,8 +177,13 @@ public final class Fisica extends Person {
     public LocalDate getBirthDate() { return birthDate; }
     public String getNameMother() { return nameMother; }
     public String getNameFather() { return nameFather; }
-    public List<Contact> getContacts() { return List.copyOf(contacts); }
-    public List<Dependent> getDependents() { return List.copyOf(dependents); }
+    public List<Contact> getContacts() { return contacts != null ? List.copyOf(contacts) : List.of(); }
+    public List<Dependent> getDependents() { return dependents != null ? List.copyOf(dependents) : List.of(); }
+    
+    public void setCpf(String cpf) { this.cpf = cpf; }
+    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
+    public void setNameMother(String nameMother) { this.nameMother = nameMother; }
+    public void setNameFather(String nameFather) { this.nameFather = nameFather; }
     
     public void setContacts(List<Contact> contacts) {
         this.contacts = Optional.ofNullable(contacts).orElse(new ArrayList<>());
