@@ -53,7 +53,7 @@ public class DependentAdapter implements InsertDependentToPersonOutputPort,
     }
 
     @Override
-    public Dependent updateDependent(Dependent dependent) {
+    public Dependent update(Dependent dependent) {
         return insert(dependent);
     }
 }

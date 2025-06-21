@@ -1,8 +1,7 @@
 package com.rlti.hex.application.port.input;
 
-import com.rlti.hex.adapters.input.api.request.AddressRequest;
-import com.rlti.hex.adapters.input.api.response.AddressResponse;
+import com.rlti.hex.application.core.domain.Address;
 
 public interface UpdateAddressInputPort {
-    AddressResponse updateAddressInputPort(Long idAddress, AddressRequest request);
+    Address update(Address address, Long id);
 }

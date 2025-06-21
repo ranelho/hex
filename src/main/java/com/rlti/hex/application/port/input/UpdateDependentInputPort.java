@@ -1,8 +1,10 @@
 package com.rlti.hex.application.port.input;
 
-import com.rlti.hex.adapters.input.api.request.DependentRequest;
-import com.rlti.hex.adapters.input.api.response.DependentResponse;
+import com.rlti.hex.application.core.domain.Dependent;
+import com.rlti.hex.application.core.domain.enuns.DependentType;
+
+import java.time.LocalDate;
 
 public interface UpdateDependentInputPort {
-    DependentResponse update(Long id, DependentRequest dependentRequest);
+    Dependent update(Long id, String name, String cpf, LocalDate birthDate, String dependentType);
 }

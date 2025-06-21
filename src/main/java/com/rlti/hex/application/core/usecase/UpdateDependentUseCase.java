@@ -1,13 +1,14 @@
 package com.rlti.hex.application.core.usecase;
 
-import com.rlti.hex.adapters.input.api.request.ContactRequest;
-import com.rlti.hex.adapters.input.api.request.DependentRequest;
-import com.rlti.hex.adapters.input.api.response.DependentResponse;
+import com.rlti.hex.application.core.domain.Dependent;
+import com.rlti.hex.application.core.domain.enuns.DependentType;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.UpdateDependentInputPort;
 import com.rlti.hex.application.port.output.FindDependentOutputPort;
 import com.rlti.hex.application.port.output.UpdateDependentOutputPort;
 import com.rlti.hex.config.aspect.Monitored;
+
+import java.time.LocalDate;
 
 @UseCase
 @Monitored
@@ -25,7 +26,17 @@ public class UpdateDependentUseCase implements UpdateDependentInputPort {
     }
 
     @Override
-    public DependentResponse update(Long id, DependentRequest dependentRequest) {
-        return null;
+    public Dependent update(Long id, String name, String cpf, LocalDate birthDate, String dependentType) {
+        var dependent = findDependentOutputPort.find(id)
+                .orElseThrow(() -> new RuntimeException("Dependent not found"));
+        
+        dependent.update(
+            name,
+            cpf,
+            birthDate,
+            DependentType.fromDescription(dependentType)
+        );
+        
+        return updateDependentOutputPort.update(dependent);
     }
 }

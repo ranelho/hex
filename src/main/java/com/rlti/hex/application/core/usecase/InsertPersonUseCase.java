@@ -1,7 +1,5 @@
 package com.rlti.hex.application.core.usecase;
 
-import com.rlti.hex.adapters.input.api.request.PersonRequest;
-import com.rlti.hex.adapters.input.api.response.PersonResponse;
 import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.InsertPersonInputPort;
@@ -26,12 +24,10 @@ public class InsertPersonUseCase implements InsertPersonInputPort {
     }
 
     @Override
-    public PersonResponse insert(PersonRequest request) {
-        if (findPersonOutputPort.exists(request.cpf()))
+    public Fisica insert(Fisica request) {
+        if (findPersonOutputPort.exists(request.getCpf()))
             throw new DuplicidadeException("Person already exists");
 
-        var person = new Fisica(request);
-        var personSaved = outputPort.insert(person);
-        return new PersonResponse(personSaved);
+        return outputPort.insert(request);
     }
 }

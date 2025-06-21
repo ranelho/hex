@@ -1,7 +1,6 @@
 package com.rlti.hex.application.core.usecase;
 
-import com.rlti.hex.adapters.input.api.request.PersonUpdateRequest;
-import com.rlti.hex.adapters.input.api.response.PersonResponse;
+import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.UpdatePersonInputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
@@ -25,23 +24,12 @@ public class UpdatePersonUseCase implements UpdatePersonInputPort {
     }
 
     @Override
-    public PersonResponse update(Long id, PersonUpdateRequest request) {
+    public Fisica update(Fisica request, Long id) {
         var person = findPersonOutputPort.find(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found"));
 
         person.update(request);
-
-        if (request.addresses() != null)
-            request.addresses().forEach(person::updateOrAddAddress);
-
-        if (request.contacts() != null)
-            request.contacts().forEach(person::updateOrAddContact);
-
-        if(request.dependents() != null)
-            request.dependents().forEach(person::updateOrAddDependent);
-
-        var updatedPerson = updatePersonOutputPort.update(person);
-
-        return new PersonResponse(updatedPerson);
+        
+        return updatePersonOutputPort.update(person);
     }
 }
