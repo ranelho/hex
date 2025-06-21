@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface FindPersonOutputPort {
     Optional<Fisica> find(Long id);
 
-    Page<Fisica> findAll(Pageable pageable);
+    Page<Fisica> findAll(int page, int size);
 
     Optional<Person> findPerson(Long id);
 

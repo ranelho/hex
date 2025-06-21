@@ -40,7 +40,8 @@ public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPo
     }
 
     @Override
-    public Page<Fisica> findAll(Pageable pageable) {
+    public Page<Fisica> findAll(int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
         var fisicaPage = fisicaJpaRepository.findAll(pageable);
         return fisicaPage.map(entity -> modelMapper.map(entity, Fisica.class));
     }

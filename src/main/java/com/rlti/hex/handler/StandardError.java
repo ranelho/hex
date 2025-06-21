@@ -1,24 +1,23 @@
 package com.rlti.hex.handler;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-@Getter
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+@AllArgsConstructor
 @Schema(name = "StandardError", description = "Schema padrão para erros")
 public class StandardError {
-    private String field;
+    private HttpStatus status;
+    private Integer code;
+    private String error;
     private String message;
-
-    public StandardError(String field, String message) {
-        this.field = field;
-        this.message = message;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    private LocalDateTime timestamp;
+    private String uuid;
 }

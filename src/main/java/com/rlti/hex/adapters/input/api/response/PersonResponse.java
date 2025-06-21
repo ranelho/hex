@@ -14,7 +14,8 @@ public record PersonResponse(
         String nameMother,
         String nameFather,
         List<AddressResponse> addresses,
-        List<ContactResponse> contacts
+        List<ContactResponse> contacts,
+        List<DependentResponse> dependents
 ) {
     public PersonResponse(Fisica person) {
         this(
@@ -31,7 +32,20 @@ public record PersonResponse(
 
                 Optional.ofNullable(person.getContacts())
                         .map(ContactResponse::convertList)
+                        .orElse(List.of()),
+
+                Optional.ofNullable(person.getDependents())
+                        .map(DependentResponse::convertList)
                         .orElse(List.of())
+        );
+    }
+
+    public static PageResult<PersonResponse> convertToPageResult(PageResult<Fisica> response) {
+        return new PageResult<>(
+                response.content().stream().map(PersonResponse::new).toList(),
+                response.pageNumber(),
+                response.pageSize(),
+                response.totalElements()
         );
     }
 }

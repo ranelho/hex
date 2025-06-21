@@ -1,7 +1,5 @@
 package com.rlti.hex.application.core.usecase;
 
-import com.rlti.hex.adapters.input.api.request.ContactRequest;
-import com.rlti.hex.adapters.input.api.response.ContactResponse;
 import com.rlti.hex.application.core.domain.Contact;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.InsertContactToPersonInputPort;
@@ -25,12 +23,12 @@ public class InsertContactToPersonUseCase implements InsertContactToPersonInputP
     }
 
     @Override
-    public ContactResponse insert(Long idPerson, ContactRequest request) {
+    public Contact insert(Contact contact, Long idPerson) {
         var fisica = findPersonOutputPort.find(idPerson)
                 .orElseThrow(() -> new RuntimeException("Person not found"));
-        var contact = new Contact(fisica, request);
-
-        var contactSaved = insertContactToPersonOutputPort.insert(contact);
-        return new ContactResponse(contactSaved);
+        
+        contact.setFisica(fisica);
+        
+        return insertContactToPersonOutputPort.insert(contact);
     }
 }

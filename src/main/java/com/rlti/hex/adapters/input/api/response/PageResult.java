@@ -1,4 +1,4 @@
-package com.rlti.hex.adapters.input.api;
+package com.rlti.hex.adapters.input.api.response;
 
 import org.springframework.data.domain.Page;
 

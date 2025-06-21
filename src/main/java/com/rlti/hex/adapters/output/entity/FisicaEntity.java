@@ -15,6 +15,7 @@ import java.util.List;
 @DiscriminatorValue("FISICA")
 @EqualsAndHashCode(callSuper = true)
 public class FisicaEntity extends PersonEntity {
+
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
     private LocalDate birthDate;
@@ -23,5 +24,8 @@ public class FisicaEntity extends PersonEntity {
 
     @OneToMany(mappedBy = "fisica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ContactEntity> contacts;
+
+    @OneToMany(mappedBy = "fisica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DependentEntity> dependents;
 }
 
