@@ -1,7 +1,8 @@
 package com.rlti.hex.application.core.usecase;
 
-import com.rlti.hex.adapters.input.api.PageResult;
+import com.rlti.hex.adapters.input.api.response.PageResult;
 import com.rlti.hex.adapters.input.api.response.PersonResponse;
+import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.FindPersonInputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
@@ -27,8 +28,8 @@ public class FindPersonUseCase implements FindPersonInputPort {
     }
 
     @Override
-    public PageResult<PersonResponse> findAll(Pageable pageable) {
-        var persons = findPersonOutputPort.findAll(pageable);
-        return PageResult.from(persons.map(PersonResponse::new));
+    public PageResult<Fisica> findAll(int page, int size) {
+        var persons = findPersonOutputPort.findAll(page, size);
+        return PageResult.from(persons);
     }
 }

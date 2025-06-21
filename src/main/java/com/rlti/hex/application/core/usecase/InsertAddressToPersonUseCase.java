@@ -1,7 +1,5 @@
 package com.rlti.hex.application.core.usecase;
 
-import com.rlti.hex.adapters.input.api.request.AddressRequest;
-import com.rlti.hex.adapters.input.api.response.AddressResponse;
 import com.rlti.hex.application.core.domain.Address;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.InsertAddressToPersonInputPort;
@@ -26,11 +24,12 @@ public class InsertAddressToPersonUseCase implements InsertAddressToPersonInputP
     }
 
     @Override
-    public AddressResponse insert(Long idPerson, AddressRequest request) {
+    public Address insert(Address address, Long idPerson) {
         var person = findPersonByIdUseCase.findPerson(idPerson)
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found"));
-        var address = new Address(person, request);
-        var addressSaved = insertAddressToPersonOutputPort.insert(address);
-        return new AddressResponse(addressSaved);
+        
+        address.setPerson(person);
+        
+        return insertAddressToPersonOutputPort.insert(address);
     }
 }

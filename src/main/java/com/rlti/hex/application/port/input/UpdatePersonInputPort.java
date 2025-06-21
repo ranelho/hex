@@ -1,8 +1,7 @@
 package com.rlti.hex.application.port.input;
 
-import com.rlti.hex.adapters.input.api.request.PersonUpdateRequest;
-import com.rlti.hex.adapters.input.api.response.PersonResponse;
+import com.rlti.hex.application.core.domain.Fisica;
 
 public interface UpdatePersonInputPort {
-    PersonResponse update(Long id, PersonUpdateRequest request);
+    Fisica update(Fisica reqeuest, Long id);
 }

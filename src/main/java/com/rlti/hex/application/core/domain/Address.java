@@ -1,7 +1,5 @@
 package com.rlti.hex.application.core.domain;
 
-import com.rlti.hex.adapters.input.api.request.AddressRequest;
-
 public class Address {
     private Long id;
     private String street;
@@ -17,37 +15,59 @@ public class Address {
     public Address() {
     }
 
-    public void update(AddressRequest request) {
-        this.street = request.street();
-        this.city = request.city();
-        this.state = request.state();
-        this.zipCode = request.zipCode();
-        this.country = request.country();
-        this.number = request.number();
-        this.neighborhood = request.neighborhood();
+    // Construtor usado pelo AddressRequest.toDomain()
+    public Address(Long id, String street, String city, String state, String neighborhood, String zipCode, String country, String number) {
+        this.id = id;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.neighborhood = neighborhood;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.number = number;
     }
 
-    public Address(AddressRequest request) {
-        this.street = request.street();
-        this.city = request.city();
-        this.state = request.state();
-        this.zipCode = request.zipCode();
-        this.country = request.country();
-        this.number = request.number();
-        this.neighborhood = request.neighborhood();
+    public Address(String street, String city, String state, String zipCode, String country, String number, String neighborhood) {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.number = number;
+        this.neighborhood = neighborhood;
     }
 
-    public Address(Person person, AddressRequest request) {
+    public Address(Person person, String street, String city, String state, String zipCode, String country, String number, String neighborhood) {
         this.person = person;
-        this.street = request.street();
-        this.city = request.city();
-        this.state = request.state();
-        this.zipCode = request.zipCode();
-        this.country = request.country();
-        this.number = request.number();
-        this.neighborhood = request.neighborhood();
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.number = number;
+        this.neighborhood = neighborhood;
     }
 
+    public Address(Fisica fisica, Address address) {
+        this.person = fisica;
+        this.street = address.getStreet();
+        this.city = address.getCity();
+        this.state = address.getState();
+        this.neighborhood = address.getNeighborhood();
+        this.zipCode = address.getZipCode();
+        this.country = address.getCountry();
+        this.number = address.getNumber();
+    }
+
+    public void update(Address address) {
+        this.street = address.getStreet();
+        this.city = address.getCity();
+        this.state = address.getState();
+        this.neighborhood = address.getNeighborhood();
+        this.zipCode = address.getZipCode();
+        this.country = address.getCountry();
+        this.number = address.getNumber();
+    }
 
     public Long getId() {
         return id;
@@ -81,6 +101,14 @@ public class Address {
         this.state = state;
     }
 
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
     public String getZipCode() {
         return zipCode;
     }
@@ -112,4 +140,7 @@ public class Address {
     public void setPerson(Person person) {
         this.person = person;
     }
+
+
+
 }
