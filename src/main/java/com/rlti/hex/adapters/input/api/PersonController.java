@@ -5,6 +5,7 @@ import com.rlti.hex.adapters.input.api.request.PersonUpdateRequest;
 import com.rlti.hex.adapters.input.api.response.PageResult;
 import com.rlti.hex.adapters.input.api.response.PersonResponse;
 import com.rlti.hex.application.core.domain.Fisica;
+import com.rlti.hex.application.port.input.DeletePersonInputPort;
 import com.rlti.hex.application.port.input.FindPersonInputPort;
 import com.rlti.hex.application.port.input.InsertPersonInputPort;
 import com.rlti.hex.application.port.input.UpdatePersonInputPort;
@@ -26,6 +27,7 @@ public class PersonController {
     private final InsertPersonInputPort insertPersonInputPort;
     private final FindPersonInputPort findPersonInputPort;
     private final UpdatePersonInputPort updatePersonInputPort;
+    private final DeletePersonInputPort deletePersonInputPort;
 
     @PostMapping
     public ResponseEntity<PersonResponse> createPerson(@Valid @RequestBody PersonRequest request) {
@@ -55,5 +57,11 @@ public class PersonController {
         Fisica person = updatePersonInputPort.update( request.updateDomain(), id);
 
         return ResponseEntity.ok(new PersonResponse(person));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
+        deletePersonInputPort.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

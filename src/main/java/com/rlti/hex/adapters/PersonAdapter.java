@@ -5,6 +5,7 @@ import com.rlti.hex.adapters.output.repository.FisicaJpaRepository;
 import com.rlti.hex.adapters.output.repository.PersonJpaRepository;
 import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.domain.Person;
+import com.rlti.hex.application.port.output.DeletePersonOutputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
 import com.rlti.hex.application.port.output.InsertPersonOutputPort;
 import com.rlti.hex.application.port.output.UpdatePersonOutputPort;
@@ -19,7 +20,8 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPort, UpdatePersonOutputPort {
+public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPort,
+        UpdatePersonOutputPort, DeletePersonOutputPort {
 
     private final FisicaJpaRepository fisicaJpaRepository;
     private final PersonJpaRepository personJpaRepository;
@@ -62,5 +64,10 @@ public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPo
         var fisicaEntity = modelMapper.map(person, FisicaEntity.class);
         var updatedFisica = fisicaJpaRepository.save(fisicaEntity);
         return modelMapper.map(updatedFisica, Fisica.class);
+    }
+
+    @Override
+    public void delete(Fisica person) {
+        personJpaRepository.deleteById(person.getId());
     }
 }
