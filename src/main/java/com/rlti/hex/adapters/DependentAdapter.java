@@ -1,6 +1,6 @@
 package com.rlti.hex.adapters;
 
-import com.rlti.hex.adapters.output.entity.DependentEntity;
+import com.rlti.hex.adapters.mapper.DependentMapper;
 import com.rlti.hex.adapters.output.repository.DependentJpaRepository;
 import com.rlti.hex.application.core.domain.Dependent;
 import com.rlti.hex.application.core.domain.Person;
@@ -10,7 +10,6 @@ import com.rlti.hex.application.port.output.InsertDependentToPersonOutputPort;
 import com.rlti.hex.application.port.output.UpdateDependentOutputPort;
 import com.rlti.hex.config.aspect.Monitored;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,33 +22,33 @@ public class DependentAdapter implements InsertDependentToPersonOutputPort,
         FindDependentOutputPort, DeleteDependentOutputPort, UpdateDependentOutputPort {
 
     private final DependentJpaRepository dependentJpaRepository;
-    private final ModelMapper modelMapper;
+    private final DependentMapper dependentMapper;
 
     @Override
     public void delete(Dependent dependent) {
-        var dependentEntity = modelMapper.map(dependent, DependentEntity.class);
+        var dependentEntity = dependentMapper.toEntity(dependent);
         dependentJpaRepository.delete(dependentEntity);
     }
 
     @Override
     public Optional<Dependent> find(Long id) {
         return dependentJpaRepository.findById(id)
-                .map(dependentEntity -> modelMapper.map(dependentEntity, Dependent.class));
+                .map(dependentMapper::toModel);
     }
 
     @Override
     public List<Dependent> findAllByPerson(Person person) {
         var dependents = dependentJpaRepository.findAllByFisica_Id(person.getId());
         return dependents.stream()
-                .map(dependentEntity -> modelMapper.map(dependentEntity, Dependent.class))
+                .map(dependentMapper::toModel)
                 .toList();
     }
 
     @Override
     public Dependent insert(Dependent dependent) {
-        var dependentEntity = modelMapper.map(dependent, DependentEntity.class);
+        var dependentEntity = dependentMapper.toEntity(dependent);
         var savedDependentEntity = dependentJpaRepository.save(dependentEntity);
-        return modelMapper.map(savedDependentEntity, Dependent.class);
+        return dependentMapper.toModel(savedDependentEntity);
     }
 
     @Override
