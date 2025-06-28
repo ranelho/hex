@@ -4,9 +4,7 @@ import com.rlti.hex.adapters.output.entity.FisicaEntity;
 import com.rlti.hex.adapters.output.entity.PersonEntity;
 import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.domain.Person;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {AddressMapper.class, ContactMapper.class, DependentMapper.class})
 public interface PersonMapper {
@@ -27,21 +25,46 @@ public interface PersonMapper {
     @Mapping(target = "dependents.fisica", ignore = true)
     FisicaEntity toEntity(Fisica model);
     
-    // Método específico para converter Person para FisicaEntity
     default FisicaEntity toFisicaEntity(Person model) {
         if (model == null) {
             return null;
         }
-        
-        // Se o model já é uma instância de Fisica, podemos fazer uma conversão mais completa
+
         if (model instanceof Fisica fisica) {
             return toEntity(fisica);
         } else {
-            // Conversão básica se for apenas Person
             FisicaEntity fisicaEntity = new FisicaEntity();
             fisicaEntity.setId(model.getId());
             fisicaEntity.setName(model.getName());
             return fisicaEntity;
+        }
+    }
+    
+    @AfterMapping
+    default void setFisicaId(@MappingTarget Fisica target, FisicaEntity source) {
+        if (source != null && source.getId() != null) {
+            target.setId(source.getId());
+        }
+    }
+    
+    @AfterMapping
+    default void setPersonId(@MappingTarget Person target, PersonEntity source) {
+        if (source != null && source.getId() != null) {
+            target.setId(source.getId());
+        }
+    }
+    
+    @AfterMapping
+    default void setPersonEntityId(@MappingTarget PersonEntity target, Person source) {
+        if (source != null && source.getId() != null) {
+            target.setId(source.getId());
+        }
+    }
+    
+    @AfterMapping
+    default void setFisicaEntityId(@MappingTarget FisicaEntity target, Fisica source) {
+        if (source != null && source.getId() != null) {
+            target.setId(source.getId());
         }
     }
 }
