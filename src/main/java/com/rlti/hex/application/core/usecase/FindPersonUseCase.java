@@ -6,11 +6,13 @@ import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.FindPersonInputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
+import com.rlti.hex.config.aspect.Cached;
 import com.rlti.hex.config.aspect.Monitored;
 import com.rlti.hex.handler.ResourceNotFoundException;
 import org.springframework.data.domain.Pageable;
 
 @Monitored
+@Cached(cacheName = "persons")
 @UseCase
 public class FindPersonUseCase implements FindPersonInputPort {
 

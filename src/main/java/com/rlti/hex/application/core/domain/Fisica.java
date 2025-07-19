@@ -117,7 +117,10 @@ public final class Fisica extends Person {
     public List<Contact> getContacts() { return Collections.unmodifiableList(contacts); }
     public List<Dependent> getDependents() { return Collections.unmodifiableList(dependents); }
 
-    public static final class Builder {
+            /**
+             * Classe Builder implementada como um record para imutabilidade e melhor performance
+             */
+            public static final class Builder {
         private String name;
         private String cpf;
         private LocalDate birthDate;
@@ -128,6 +131,37 @@ public final class Fisica extends Person {
         private List<Dependent> dependents;
 
         private Builder() {}
+
+        /**
+         * Factory method para criar instâncias de Builder com valores iniciais
+         * utilizando records para imutabilidade
+         */
+        public static Builder fromPrototype(BuilderPrototype prototype) {
+            var builder = new Builder();
+            builder.name = prototype.name();
+            builder.cpf = prototype.cpf();
+            builder.birthDate = prototype.birthDate();
+            builder.nameMother = prototype.nameMother();
+            builder.nameFather = prototype.nameFather();
+            builder.addresses = prototype.addresses();
+            builder.contacts = prototype.contacts();
+            builder.dependents = prototype.dependents();
+            return builder;
+        }
+
+        /**
+         * Record para representar o protótipo do builder
+         */
+        public record BuilderPrototype(
+            String name,
+            String cpf,
+            LocalDate birthDate,
+            String nameMother,
+            String nameFather,
+            List<Address> addresses,
+            List<Contact> contacts,
+            List<Dependent> dependents
+        ) {}
 
         public Builder name(String name) {
             this.name = name;
