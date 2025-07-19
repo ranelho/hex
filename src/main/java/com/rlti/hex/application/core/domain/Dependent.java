@@ -109,5 +109,16 @@ public class Dependent {
         this.fisica = fisica;
     }
 
+    @Override
+    public String toString() {
+        return "Dependent{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", birthDate=" + birthDate +
+                ", dependentType=" + dependentType +
+                '}';
+    }
+
 
 }

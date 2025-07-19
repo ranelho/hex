@@ -14,3 +14,16 @@ server:
 springdoc:
   swagger-ui:
     path: /public/swagger
+
+  # Configurações personalizadas da aplicação
+  app:
+  logging:
+    include-context-details: true
+    max-response-size-in-log: 1000
+    include-full-stack-trace: false
+  cache:
+    default-time-to-live-seconds: 300
+    max-size: 1000
+  monitoring:
+    slow-execution-threshold-ms: 1000
+    log-slow-methods: true

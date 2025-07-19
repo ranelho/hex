@@ -117,6 +117,21 @@ public final class Fisica extends Person {
     public List<Contact> getContacts() { return Collections.unmodifiableList(contacts); }
     public List<Dependent> getDependents() { return Collections.unmodifiableList(dependents); }
 
+    @Override
+    public String toString() {
+        return "Fisica{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", birthDate=" + birthDate +
+                ", nameMother='" + nameMother + '\'' +
+                ", nameFather='" + nameFather + '\'' +
+                ", addresses=" + (addresses != null ? addresses.size() : 0) +
+                ", contacts=" + (contacts != null ? contacts.size() : 0) +
+                ", dependents=" + (dependents != null ? dependents.size() : 0) +
+                '}';
+    }
+
             /**
              * Classe Builder implementada como um record para imutabilidade e melhor performance
              */

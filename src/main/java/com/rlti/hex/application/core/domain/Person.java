@@ -32,4 +32,13 @@ public class Person {
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", addresses=" + (addresses != null ? addresses.size() : 0) +
+                '}';
+    }
 }

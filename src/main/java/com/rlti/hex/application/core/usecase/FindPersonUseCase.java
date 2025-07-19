@@ -11,7 +11,7 @@ import com.rlti.hex.config.aspect.Monitored;
 import com.rlti.hex.handler.ResourceNotFoundException;
 import org.springframework.data.domain.Pageable;
 
-@Monitored
+@Monitored(level = Monitored.LogLevel.DETAILED, logParameters = true, slowExecutionThresholdMs = 500)
 @Cached(cacheName = "persons")
 @UseCase
 public class FindPersonUseCase implements FindPersonInputPort {
