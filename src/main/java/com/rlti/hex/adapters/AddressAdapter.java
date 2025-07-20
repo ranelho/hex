@@ -1,6 +1,7 @@
 package com.rlti.hex.adapters;
 
 import com.rlti.hex.adapters.mapper.AddressMapper;
+import com.rlti.hex.adapters.output.entity.PersonEntity;
 import com.rlti.hex.adapters.output.repository.AddressJpaRepository;
 import com.rlti.hex.application.core.domain.Address;
 import com.rlti.hex.application.port.output.DeleteAddressOutputPort;
@@ -27,9 +28,26 @@ public class AddressAdapter implements InsertAddressToPersonOutputPort,
     @Transactional
     @Override
     public Address insert(Address address) {
+        // Convertemos para entidade usando o mapper
         var addressEntity = addressMapper.toEntity(address);
+
+        // Configuramos manualmente a associação com Person
+        if (address.getPerson() != null && address.getPerson().getId() != null) {
+            PersonEntity personEntity = new PersonEntity();
+            personEntity.setId(address.getPerson().getId());
+            addressEntity.setPerson(personEntity);
+        }
+
+        // Salvamos no banco
         var addressEntitySaved = addressJpaRepository.save(addressEntity);
-        return addressMapper.toModel(addressEntitySaved);
+
+        // Convertemos de volta para o modelo de domínio usando o mapper
+        Address result = addressMapper.toModel(addressEntitySaved);
+
+        // Mantemos a associação com Person do objeto original
+        result.setPerson(address.getPerson());
+
+        return result;
     }
 
     @Override
