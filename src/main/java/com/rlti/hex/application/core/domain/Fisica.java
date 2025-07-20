@@ -23,11 +23,11 @@ public final class Fisica extends Person {
         this.birthDate = Objects.requireNonNull(builder.birthDate, "Birth date is required");
         this.nameMother = builder.nameMother;
         this.nameFather = builder.nameFather;
-        
+
         this.addresses = new ArrayList<>(builder.addresses != null ? builder.addresses : Collections.emptyList());
         this.contacts = new ArrayList<>(builder.contacts != null ? builder.contacts : Collections.emptyList());
         this.dependents = new ArrayList<>(builder.dependents != null ? builder.dependents : Collections.emptyList());
-        
+
         setupRelationships();
     }
 
@@ -51,7 +51,7 @@ public final class Fisica extends Person {
 
     public void updateOrAddAddress(List<Address> newAddresses) {
         if (newAddresses == null) return;
-        
+
         newAddresses.forEach(address -> {
             if (address.getId() != null) {
                 findExistingAddress(address.getId()).update(address);
@@ -61,7 +61,7 @@ public final class Fisica extends Person {
             }
         });
     }
-    
+
     private Address findExistingAddress(Long id) {
         return addresses.stream()
                 .filter(a -> a.getId().equals(id))
@@ -71,7 +71,7 @@ public final class Fisica extends Person {
 
     public void updateOrAddContact(List<Contact> newContacts) {
         if (newContacts == null) return;
-        
+
         newContacts.forEach(contact -> {
             if (contact.getId() != null) {
                 findExistingContact(contact.getId()).update(contact);
@@ -81,7 +81,7 @@ public final class Fisica extends Person {
             }
         });
     }
-    
+
     private Contact findExistingContact(Long id) {
         return contacts.stream()
                 .filter(c -> c.getId().equals(id))
@@ -91,7 +91,7 @@ public final class Fisica extends Person {
 
     public void updateOrAddDependent(List<Dependent> newDependents) {
         if (newDependents == null) return;
-        
+
         newDependents.forEach(dependent -> {
             if (dependent.getId() != null) {
                 findExistingDependent(dependent.getId()).update(dependent);
@@ -101,7 +101,7 @@ public final class Fisica extends Person {
             }
         });
     }
-    
+
     private Dependent findExistingDependent(Long id) {
         return dependents.stream()
                 .filter(d -> d.getId().equals(id))
@@ -110,12 +110,29 @@ public final class Fisica extends Person {
     }
 
     // Getters
-    public String getCpf() { return cpf; }
-    public LocalDate getBirthDate() { return birthDate; }
-    public String getNameMother() { return nameMother; }
-    public String getNameFather() { return nameFather; }
-    public List<Contact> getContacts() { return Collections.unmodifiableList(contacts); }
-    public List<Dependent> getDependents() { return Collections.unmodifiableList(dependents); }
+    public String getCpf() {
+        return cpf;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public String getNameMother() {
+        return nameMother;
+    }
+
+    public String getNameFather() {
+        return nameFather;
+    }
+
+    public List<Contact> getContacts() {
+        return Collections.unmodifiableList(contacts);
+    }
+
+    public List<Dependent> getDependents() {
+        return Collections.unmodifiableList(dependents);
+    }
 
     @Override
     public String toString() {
@@ -132,10 +149,10 @@ public final class Fisica extends Person {
                 '}';
     }
 
-            /**
-             * Classe Builder implementada como um record para imutabilidade e melhor performance
-             */
-            public static final class Builder {
+    /**
+     * Classe Builder implementada como um record para imutabilidade e melhor performance
+     */
+    public static final class Builder {
         private String name;
         private String cpf;
         private LocalDate birthDate;
@@ -145,38 +162,8 @@ public final class Fisica extends Person {
         private List<Contact> contacts;
         private List<Dependent> dependents;
 
-        private Builder() {}
-
-        /**
-         * Factory method para criar instâncias de Builder com valores iniciais
-         * utilizando records para imutabilidade
-         */
-        public static Builder fromPrototype(BuilderPrototype prototype) {
-            var builder = new Builder();
-            builder.name = prototype.name();
-            builder.cpf = prototype.cpf();
-            builder.birthDate = prototype.birthDate();
-            builder.nameMother = prototype.nameMother();
-            builder.nameFather = prototype.nameFather();
-            builder.addresses = prototype.addresses();
-            builder.contacts = prototype.contacts();
-            builder.dependents = prototype.dependents();
-            return builder;
+        private Builder() {
         }
-
-        /**
-         * Record para representar o protótipo do builder
-         */
-        public record BuilderPrototype(
-            String name,
-            String cpf,
-            LocalDate birthDate,
-            String nameMother,
-            String nameFather,
-            List<Address> addresses,
-            List<Contact> contacts,
-            List<Dependent> dependents
-        ) {}
 
         public Builder name(String name) {
             this.name = name;
@@ -220,6 +207,21 @@ public final class Fisica extends Person {
 
         public Fisica build() {
             return new Fisica(this);
+        }
+
+        /**
+         * Record para representar o protótipo do builder
+         */
+        public record BuilderPrototype(
+                String name,
+                String cpf,
+                LocalDate birthDate,
+                String nameMother,
+                String nameFather,
+                List<Address> addresses,
+                List<Contact> contacts,
+                List<Dependent> dependents
+        ) {
         }
     }
 }

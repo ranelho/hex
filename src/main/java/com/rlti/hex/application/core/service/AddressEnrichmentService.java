@@ -1,6 +1,7 @@
 package com.rlti.hex.application.core.service;
 
 import com.rlti.hex.application.core.domain.Address;
+import com.rlti.hex.application.core.domain.AddressData;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.AddressEnrichmentInputPort;
 import com.rlti.hex.application.port.output.ValidateAddressOutputPort;
@@ -71,11 +72,15 @@ public class AddressEnrichmentService implements AddressEnrichmentInputPort {
      * @param validatedAddress o endereço validado com os dados a serem mesclados
      */
     private void mergeAddressData(Address originalAddress, Address validatedAddress) {
-        updateFieldIfEmpty(originalAddress::getStreet, originalAddress::setStreet, validatedAddress.getStreet());
-        updateFieldIfEmpty(originalAddress::getNeighborhood, originalAddress::setNeighborhood, validatedAddress.getNeighborhood());
-        updateFieldIfEmpty(originalAddress::getCity, originalAddress::setCity, validatedAddress.getCity());
-        updateFieldIfEmpty(originalAddress::getState, originalAddress::setState, validatedAddress.getState());
-        updateFieldIfEmpty(originalAddress::getCountry, originalAddress::setCountry, validatedAddress.getCountry());
+        // Criar um AddressData a partir do endereço validado
+        AddressData validatedData = AddressData.from(validatedAddress);
+
+        // Atualizar os campos individualmente
+        updateFieldIfEmpty(originalAddress::getStreet, originalAddress::setStreet, validatedData.street());
+        updateFieldIfEmpty(originalAddress::getNeighborhood, originalAddress::setNeighborhood, validatedData.neighborhood());
+        updateFieldIfEmpty(originalAddress::getCity, originalAddress::setCity, validatedData.city());
+        updateFieldIfEmpty(originalAddress::getState, originalAddress::setState, validatedData.state());
+        updateFieldIfEmpty(originalAddress::getCountry, originalAddress::setCountry, validatedData.country());
     }
 
     /**
