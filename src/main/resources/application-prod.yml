@@ -10,3 +10,8 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # API configurations for production environment
+  api:
+    viacep:
+      base-url: ${VIACEP_BASE_URL_PROD:https://viacep.com.br}

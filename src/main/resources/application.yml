@@ -15,6 +15,7 @@ server:
       max-request-size: 1MB
       file-size-threshold: 0
       location: ~/temp/
+# Configurações comuns para todos os ambientes
 
 springdoc:
   swagger-ui:

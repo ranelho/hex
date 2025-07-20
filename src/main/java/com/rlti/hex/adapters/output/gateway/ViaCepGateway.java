@@ -9,6 +9,7 @@ import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +25,10 @@ import java.util.function.Supplier;
 public class ViaCepGateway implements ValidateAddressOutputPort {
 
     private static final Logger logger = LoggerFactory.getLogger(ViaCepGateway.class);
-    private static final String VIA_CEP_URL = "https://viacep.com.br/ws/{zipCode}/json/";
+    private static final String ZIP_CODE_ENDPOINT = "/ws/{zipCode}/json/";
+
+    @Value("${api.viacep.base-url}")
+    private String viaCepBaseUrl;
 
     private final RestTemplate restTemplate;
     private final CircuitBreaker circuitBreaker;
@@ -47,7 +51,7 @@ public class ViaCepGateway implements ValidateAddressOutputPort {
 
         try {
             Supplier<ViaCepResponse> supplier = circuitBreaker.decorateSupplier(() -> {
-                String url = VIA_CEP_URL.replace("{zipCode}", formattedZipCode);
+                String url = viaCepBaseUrl + ZIP_CODE_ENDPOINT.replace("{zipCode}", formattedZipCode);
                 return restTemplate.getForObject(url, ViaCepResponse.class);
             });
 
@@ -79,7 +83,7 @@ public class ViaCepGateway implements ValidateAddressOutputPort {
         try {
             // Definir a lógica de validação como um BooleanSupplier
             BooleanSupplier validationLogic = () -> {
-                String url = VIA_CEP_URL.replace("{zipCode}", formattedZipCode);
+                String url = viaCepBaseUrl + ZIP_CODE_ENDPOINT.replace("{zipCode}", formattedZipCode);
                 ViaCepResponse response = restTemplate.getForObject(url, ViaCepResponse.class);
                 return response != null && response.isValid();
             };
@@ -101,7 +105,7 @@ public class ViaCepGateway implements ValidateAddressOutputPort {
         address.setNeighborhood(response.getNeighborhood());
         address.setCity(response.getCity());
         address.setState(response.getState());
-        address.setCountry("Brasil"); // ViaCEP é específico para Brasil
+        address.setCountry("Brasil");
         return address;
     }
 
