@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # Aplicação Java Spring Boot
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hex-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-dev
+      - postgres-prod
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      # Ambiente de desenvolvimento
+      - DB_HOST_DEV=jdbc:postgresql://postgres-dev:5432/hexdev
+      - DB_USERNAME_DEV=postgres
+      - DB_PASSWORD_DEV=postgres
+      - VIACEP_BASE_URL_DEV=https://viacep.com.br
+      # Ambiente de produção
+      - DB_HOST_PROD=jdbc:postgresql://postgres-prod:5432/hexprod
+      - DB_USERNAME_PROD=postgres
+      - DB_PASSWORD_PROD=postgres123
+      - VIACEP_BASE_URL_PROD=https://viacep.com.br
+    networks:
+      - hex-network
+    restart: unless-stopped
+
+  # Banco de dados PostgreSQL para ambiente de desenvolvimento
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: postgres-dev
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=hexdev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+    networks:
+      - hex-network
+    restart: unless-stopped
+
+  # Banco de dados PostgreSQL para ambiente de produção
+  postgres-prod:
+    image: postgres:15-alpine
+    container_name: postgres-prod
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=hexprod
+    ports:
+      - "5433:5432" # Porta diferente para evitar conflito
+    volumes:
+      - postgres-prod-data:/var/lib/postgresql/data
+    networks:
+      - hex-network
+    restart: unless-stopped
+
+  # PgAdmin para gerenciar os bancos de dados
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres-dev
+      - postgres-prod
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - hex-network
+    restart: unless-stopped
+
+networks:
+  hex-network:
+    driver: bridge
+
+volumes:
+  postgres-dev-data:
+  postgres-prod-data:
+  pgadmin-data:

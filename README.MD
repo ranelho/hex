@@ -68,6 +68,30 @@ http://localhost:8080/hex/api/public/swagger-ui/index.html#
 ### Circuit Breaker
 
 O projeto utiliza o padrão Circuit Breaker através do Resilience4j para garantir a resiliência nas chamadas à API externa ViaCEP. As configurações do Circuit Breaker estão definidas no arquivo `application.yml`.
+
+## Docker
+
+O projeto inclui configuração Docker para facilitar o desenvolvimento e implantação. Os seguintes serviços são definidos no arquivo `docker-compose.yml`:
+
+- **app**: Aplicação Java Spring Boot
+- **postgres-dev**: Banco de dados PostgreSQL para ambiente de desenvolvimento
+- **postgres-prod**: Banco de dados PostgreSQL para ambiente de produção
+- **pgadmin**: Interface web para gerenciamento dos bancos de dados PostgreSQL
+
+### Executando com Docker
+
+Para iniciar todos os serviços:
+
+```bash
+# Compilar a aplicação
+./mvnw clean package -DskipTests
+
+# Iniciar os contêineres
+docker-compose up -d
+```
+
+Acesse a aplicação em: http://localhost:8080/hex/api
+Acesse o PgAdmin em: http://localhost:5050 (email: admin@example.com, senha: admin)
 ## Autor
 
 Este projeto foi desenvolvido por [Ranelho Lacerda].
