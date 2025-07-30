@@ -18,4 +18,14 @@ public record PageResult<T>(
                 page.getTotalElements()
         );
     }
+
+    @Override
+    public String toString() {
+        return "PageResult{" +
+                "content.size=" + (content != null ? content.size() : 0) +
+                ", pageNumber=" + pageNumber +
+                ", pageSize=" + pageSize +
+                ", totalElements=" + totalElements +
+                '}';
+    }
 }

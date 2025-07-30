@@ -2,6 +2,7 @@ package com.rlti.hex.application.core.usecase;
 
 import com.rlti.hex.application.core.domain.Address;
 import com.rlti.hex.application.core.usecase.config.UseCase;
+import com.rlti.hex.application.port.input.AddressEnrichmentInputPort;
 import com.rlti.hex.application.port.input.InsertAddressToPersonInputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
 import com.rlti.hex.application.port.output.InsertAddressToPersonOutputPort;
@@ -14,22 +15,31 @@ public class InsertAddressToPersonUseCase implements InsertAddressToPersonInputP
 
     private final InsertAddressToPersonOutputPort insertAddressToPersonOutputPort;
     private final FindPersonOutputPort findPersonByIdUseCase;
+    private final AddressEnrichmentInputPort addressEnrichmentService;
 
     public InsertAddressToPersonUseCase(
             InsertAddressToPersonOutputPort insertAddressToPersonOutputPort,
-            FindPersonOutputPort findPersonByIdUseCase
+            FindPersonOutputPort findPersonByIdUseCase,
+            AddressEnrichmentInputPort addressEnrichmentService
     ) {
         this.insertAddressToPersonOutputPort = insertAddressToPersonOutputPort;
         this.findPersonByIdUseCase = findPersonByIdUseCase;
+        this.addressEnrichmentService = addressEnrichmentService;
     }
 
     @Override
     public Address insert(Address address, Long idPerson) {
+        // Busca a pessoa pelo ID
         var person = findPersonByIdUseCase.findPerson(idPerson)
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found"));
-        
+
+        // Complementa o endereço com dados do serviço externo, usando o serviço dedicado
+        addressEnrichmentService.complementAddressData(address);
+
+        // Associa o endereço à pessoa
         address.setPerson(person);
-        
+
+        // Persiste o endereço
         return insertAddressToPersonOutputPort.insert(address);
     }
 }
