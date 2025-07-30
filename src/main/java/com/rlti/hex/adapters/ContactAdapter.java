@@ -1,6 +1,6 @@
 package com.rlti.hex.adapters;
 
-import com.rlti.hex.adapters.output.entity.ContactEntity;
+import com.rlti.hex.adapters.mapper.ContactMapper;
 import com.rlti.hex.adapters.output.repository.ContactJpaRepository;
 import com.rlti.hex.application.core.domain.Contact;
 import com.rlti.hex.application.port.output.DeleteContactOutputPort;
@@ -10,7 +10,6 @@ import com.rlti.hex.application.port.output.UpdateContactOutputPort;
 import com.rlti.hex.config.aspect.Monitored;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,33 +22,33 @@ public class ContactAdapter implements InsertContactToPersonOutputPort,
         FindContactOutputPort, DeleteContactOutputPort, UpdateContactOutputPort {
 
     private final ContactJpaRepository contactRepository;
-    private final ModelMapper modelMapper;
+    private final ContactMapper contactMapper;
 
     @Transactional
     @Override
     public Contact insert(Contact contact) {
-        var contactEntity = modelMapper.map(contact, ContactEntity.class);
+        var contactEntity = contactMapper.toEntity(contact);
         var savedContact = contactRepository.save(contactEntity);
-        return modelMapper.map(savedContact, Contact.class);
+        return contactMapper.toModel(savedContact);
     }
 
     @Override
     public Optional<Contact> find(Long id) {
         return contactRepository.findById(id)
-                .map(contactEntity -> modelMapper.map(contactEntity, Contact.class));
+                .map(contactMapper::toModel);
     }
 
     @Override
     public List<Contact> findAllByPerson(Long id) {
         return contactRepository.findAllByFisica_Id(id)
                 .stream()
-                .map(contactEntity -> modelMapper.map(contactEntity, Contact.class))
+                .map(contactMapper::toModel)
                 .toList();
     }
 
     @Override
     public void delete(Contact contact) {
-        contactRepository.delete(modelMapper.map(contact, ContactEntity.class));
+        contactRepository.delete(contactMapper.toEntity(contact));
     }
 
     @Override

@@ -117,5 +117,15 @@ public class Contact {
         this.fisica = fisica;
     }
 
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", ddd='" + ddd + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
+                '}';
+    }
+
 
 }

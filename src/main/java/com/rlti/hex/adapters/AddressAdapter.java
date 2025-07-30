@@ -1,6 +1,7 @@
 package com.rlti.hex.adapters;
 
-import com.rlti.hex.adapters.output.entity.AddressEntity;
+import com.rlti.hex.adapters.mapper.AddressMapper;
+import com.rlti.hex.adapters.output.entity.PersonEntity;
 import com.rlti.hex.adapters.output.repository.AddressJpaRepository;
 import com.rlti.hex.application.core.domain.Address;
 import com.rlti.hex.application.port.output.DeleteAddressOutputPort;
@@ -10,7 +11,6 @@ import com.rlti.hex.application.port.output.UpdateAddressOutputPort;
 import com.rlti.hex.config.aspect.Monitored;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,27 +23,44 @@ public class AddressAdapter implements InsertAddressToPersonOutputPort,
         FindAddressOutputPort, UpdateAddressOutputPort, DeleteAddressOutputPort {
 
     private final AddressJpaRepository addressJpaRepository;
-    private final ModelMapper modelMapper;
+    private final AddressMapper addressMapper;
 
     @Transactional
     @Override
     public Address insert(Address address) {
-        var addressEntity = modelMapper.map(address, AddressEntity.class);
+        // Convertemos para entidade usando o mapper
+        var addressEntity = addressMapper.toEntity(address);
+
+        // Configuramos manualmente a associação com Person
+        if (address.getPerson() != null && address.getPerson().getId() != null) {
+            PersonEntity personEntity = new PersonEntity();
+            personEntity.setId(address.getPerson().getId());
+            addressEntity.setPerson(personEntity);
+        }
+
+        // Salvamos no banco
         var addressEntitySaved = addressJpaRepository.save(addressEntity);
-        return modelMapper.map(addressEntitySaved, Address.class);
+
+        // Convertemos de volta para o modelo de domínio usando o mapper
+        Address result = addressMapper.toModel(addressEntitySaved);
+
+        // Mantemos a associação com Person do objeto original
+        result.setPerson(address.getPerson());
+
+        return result;
     }
 
     @Override
     public Optional<Address> find(Long id) {
         return addressJpaRepository.findById(id)
-                .map(addressEntity -> modelMapper.map(addressEntity, Address.class));
+                .map(addressMapper::toModel);
     }
 
     @Override
     public List<Address> findAll(Long idPerson) {
         var addressEntityList = addressJpaRepository.findAllByPerson_Id(idPerson);
         return addressEntityList.stream()
-                .map(addressEntity -> modelMapper.map(addressEntity, Address.class))
+                .map(addressMapper::toModel)
                 .toList();
     }
 
@@ -54,6 +71,6 @@ public class AddressAdapter implements InsertAddressToPersonOutputPort,
 
     @Override
     public void delete(Address address) {
-        addressJpaRepository.delete(modelMapper.map(address, AddressEntity.class));
+        addressJpaRepository.delete(addressMapper.toEntity(address));
     }
 }

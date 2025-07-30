@@ -1,6 +1,7 @@
 package com.rlti.hex.adapters.input.api.request;
 
 import com.rlti.hex.application.core.domain.Address;
+import com.rlti.hex.application.core.domain.AddressData;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -18,15 +19,21 @@ public record AddressRequest(
         String number
 ) {
     public Address toDomain() {
-        return new Address(
-            id,
-            street,
-            city,
-            state,
-            neighborhood,
-            zipCode,
-            country,
-            number
+        // Criar AddressData para encapsular todos os dados de endereço
+        AddressData data = new AddressData(
+            street, city, state, neighborhood, zipCode, country, number
         );
+
+        // Usar o builder para evitar o construtor com muitos parâmetros
+        return Address.builder()
+            .id(id)
+            .street(data.street())
+            .city(data.city())
+            .state(data.state())
+            .neighborhood(data.neighborhood())
+            .zipCode(data.zipCode())
+            .country(data.country())
+            .number(data.number())
+            .build();
     }
 }

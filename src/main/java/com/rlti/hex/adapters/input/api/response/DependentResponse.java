@@ -18,7 +18,7 @@ public record DependentResponse(
                 dependent.getName(),
                 dependent.getCpf(),
                 dependent.getBirthDate(),
-                dependent.getDependentType().getDescription()
+                dependent.getDependentType() != null ? dependent.getDependentType().getDescription(): null
         );
     }
 
