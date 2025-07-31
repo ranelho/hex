@@ -41,10 +41,22 @@ public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPo
     }
 
     @Override
-    public Page<Fisica> findAll(int page, int size) {
+    public Page<Fisica> findAll(String name, String cpf, int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
-        var fisicaPage = fisicaJpaRepository.findAll(pageable);
-        return fisicaPage.map(personMapper::toModel);
+
+        if (name != null && cpf != null) {
+            return fisicaJpaRepository.findByNameContainingIgnoreCaseAndCpfContaining(name, cpf, pageable)
+                    .map(personMapper::toModel);
+        } else if (name != null) {
+            return fisicaJpaRepository.findByNameContainingIgnoreCase(name, pageable)
+                    .map(personMapper::toModel);
+        } else if (cpf != null) {
+            return fisicaJpaRepository.findByCpfContaining(cpf, pageable)
+                    .map(personMapper::toModel);
+        }
+
+        return fisicaJpaRepository.findAll(pageable)
+                .map(personMapper::toModel);
     }
 
     @Override
@@ -69,4 +81,6 @@ public class PersonAdapter implements InsertPersonOutputPort, FindPersonOutputPo
     public void delete(Fisica person) {
         personJpaRepository.deleteById(person.getId());
     }
+
+
 }

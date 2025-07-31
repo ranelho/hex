@@ -42,4 +42,5 @@ public class InsertAddressToPersonUseCase implements InsertAddressToPersonInputP
         // Persiste o endereço
         return insertAddressToPersonOutputPort.insert(address);
     }
+
 }

@@ -11,10 +11,11 @@ public record AddressResponse(
         String state,
         String zipCode,
         String country,
+        String neighborhood,
         String number
 ) {
     public AddressResponse(Address address) {
-        this(address.getId(), address.getStreet(), address.getCity(), address.getState(), address.getZipCode(), address.getCountry(), address.getNumber());
+        this(address.getId(), address.getStreet(), address.getCity(), address.getState(), address.getZipCode(), address.getCountry(), address.getNeighborhood(), address.getNumber());
     }
 
     public static List<AddressResponse> convertList(List<Address> addresses) {

@@ -1,23 +1,23 @@
 package com.rlti.hex.handler;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
-@Data
 @Builder
+@Getter
 @AllArgsConstructor
-@Schema(name = "StandardError", description = "Schema padrão para erros")
+@JsonPropertyOrder({"details", "error", "message", "timestamp", "status"})
 public class StandardError {
-    private HttpStatus status;
-    private Integer code;
+    private String status;
+    private int code;
     private String error;
     private String message;
     private LocalDateTime timestamp;
     private String uuid;
+    private Map<String, String> details;
 }

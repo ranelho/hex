@@ -7,14 +7,12 @@ import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record PersonRequest(
-        @NotBlank(message = "Name is required") String name,
-        @CPF(message = "Invalid CPF") String cpf,
-        @Past(message = "Invalid birth date") LocalDate birthDate,
+        @NotBlank(message = "Nome é obrigatório") String name,
+        @CPF(message = "CPF Inválido") String cpf,
+        @Past(message = "Data de nascimento inválida") LocalDate birthDate,
         String nameMother,
         String nameFather,
         List<@Valid AddressRequest> addresses,

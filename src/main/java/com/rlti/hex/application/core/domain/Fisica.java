@@ -9,18 +9,18 @@ import java.util.List;
 import java.util.Objects;
 
 public final class Fisica extends Person {
-    private final String cpf;
-    private final LocalDate birthDate;
-    private final String nameMother;
-    private final String nameFather;
-    private final List<Contact> contacts;
-    private final List<Dependent> dependents;
+    private String cpf;
+    private LocalDate birthDate;
+    private String nameMother;
+    private String nameFather;
+    private List<Contact> contacts;
+    private List<Dependent> dependents;
 
     private Fisica(Builder builder) {
         super();
-        this.name = Objects.requireNonNull(builder.name, "Name is required");
-        this.cpf = Objects.requireNonNull(builder.cpf, "CPF is required");
-        this.birthDate = Objects.requireNonNull(builder.birthDate, "Birth date is required");
+        this.name = builder.name;
+        this.cpf = builder.cpf;
+        this.birthDate = builder.birthDate;
         this.nameMother = builder.nameMother;
         this.nameFather = builder.nameFather;
 
@@ -44,6 +44,9 @@ public final class Fisica extends Person {
     public void update(Fisica request) {
         Objects.requireNonNull(request, "Update request cannot be null");
         this.name = request.getName();
+        this.nameMother = request.getNameMother();
+        this.nameFather = request.getNameFather();
+        this.birthDate = request.getBirthDate();
         updateOrAddAddress(request.getAddresses());
         updateOrAddContact(request.getContacts());
         updateOrAddDependent(request.getDependents());

@@ -39,4 +39,6 @@ public class UpdateDependentUseCase implements UpdateDependentInputPort {
         
         return updateDependentOutputPort.update(dependent);
     }
+
+
 }

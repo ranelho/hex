@@ -1,93 +1,121 @@
 package com.rlti.hex.handler;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<List<StandardError>> handleValidationException(MethodArgumentNotValidException ex) {
-        List<StandardError> errors = new ArrayList<>();
+    public ResponseEntity<StandardError> handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, String> details = new HashMap<>();
+
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            StandardError error = StandardError.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .code(HttpStatus.BAD_REQUEST.value())
-                    .error("Validation Error")
-                    .message(fieldError.getDefaultMessage())
-                    .timestamp(LocalDateTime.now())
-                    .uuid(UUID.randomUUID().toString())
-                    .build();
-            errors.add(error);
+            details.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+
+        StandardError error = StandardError.builder()
+                .status(HttpStatus.BAD_REQUEST.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .error("Validation Error")
+                .message("Erros de validação encontrados")
+                .timestamp(LocalDateTime.now())
+                .uuid(UUID.randomUUID().toString())
+                .details(details)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardError> handleConstraintViolation(ConstraintViolationException ex) {
+        Map<String, String> details = new HashMap<>();
+
+        ex.getConstraintViolations().forEach(violation -> {
+            String propertyPath = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            details.put(propertyPath, message);
+        });
+
+        StandardError error = StandardError.builder()
+                .status(HttpStatus.BAD_REQUEST.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .error("Validation Error")
+                .message("Erros de validação encontrados")
+                .timestamp(LocalDateTime.now())
+                .uuid(UUID.randomUUID().toString())
+                .details(details)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<StandardError> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         StandardError error = StandardError.builder()
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST.name())
                 .code(HttpStatus.BAD_REQUEST.value())
                 .error("Malformed JSON request")
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .uuid(UUID.randomUUID().toString())
+                .details(null)
                 .build();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<StandardError> handleRuntimeException(RuntimeException ex) {
         StandardError error = StandardError.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error("Internal Server Error")
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .uuid(UUID.randomUUID().toString())
+                .details(null)
                 .build();
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<StandardError> handleResourceNotFoundException(ResourceNotFoundException ex) {
         StandardError error = StandardError.builder()
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND.name())
                 .code(HttpStatus.NOT_FOUND.value())
                 .error("Resource Not Found")
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .uuid(UUID.randomUUID().toString())
+                .details(null)
                 .build();
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(DuplicidadeException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<StandardError> handleDuplicidadeException(DuplicidadeException ex) {
         StandardError error = StandardError.builder()
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.CONFLICT.name())
                 .code(HttpStatus.CONFLICT.value())
                 .error("Resource Conflict")
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .uuid(UUID.randomUUID().toString())
+                .details(null)
                 .build();
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
+
 }

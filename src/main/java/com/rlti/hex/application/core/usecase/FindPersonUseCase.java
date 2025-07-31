@@ -9,7 +9,6 @@ import com.rlti.hex.application.port.output.FindPersonOutputPort;
 import com.rlti.hex.config.aspect.Cached;
 import com.rlti.hex.config.aspect.Monitored;
 import com.rlti.hex.handler.ResourceNotFoundException;
-import org.springframework.data.domain.Pageable;
 
 @Monitored(level = Monitored.LogLevel.DETAILED, logParameters = true, slowExecutionThresholdMs = 500)
 @Cached(cacheName = "persons")
@@ -30,8 +29,13 @@ public class FindPersonUseCase implements FindPersonInputPort {
     }
 
     @Override
-    public PageResult<Fisica> findAll(int page, int size) {
-        var persons = findPersonOutputPort.findAll(page, size);
+    public PageResult<Fisica> findAll(String name, String cpf, int page, int size) {
+        var persons = findPersonOutputPort.findAll(name, cpf, page, size);
         return PageResult.from(persons);
+    }
+
+    @Override
+    public boolean exists(String cpf) {
+        return findPersonOutputPort.exists(cpf);
     }
 }

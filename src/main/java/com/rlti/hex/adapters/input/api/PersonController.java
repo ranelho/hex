@@ -26,6 +26,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 @Tag(name = "Person", description = "Person API")
 @RequestMapping("/person")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"}) // Adicione esta anotação
 public class PersonController {
 
     private final InsertPersonInputPort insertPersonInputPort;
@@ -57,16 +58,18 @@ public class PersonController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Find all persons", description = "Get a paginated list of all persons")
+    @Operation(summary = "Find all persons", description = "Get a paginated list of all persons with optional filters")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list")
     })
     @GetMapping("/all")
     public ResponseEntity<PageResult<PersonResponse>> findAll(
+            @Parameter(description = "Filter by name") @RequestParam(required = false) String name,
+            @Parameter(description = "Filter by CPF") @RequestParam(required = false) String cpf,
             @Parameter(description = "Page number (starts from 0)") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "12") int size
     ) {
-        var response = findPersonInputPort.findAll(page, size);
+        var response = findPersonInputPort.findAll(name, cpf, page, size);
         return ResponseEntity.ok(PersonResponse.convertToPageResult(response));
     }
 
@@ -92,5 +95,19 @@ public class PersonController {
     public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
         deletePersonInputPort.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //criar um endpoint para validar se existe pessoa com o cpf informado
+    @Operation(summary = "Check if person exists by CPF", description = "Check if a person exists with the provided CPF")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Person exists"),
+            @ApiResponse(responseCode = "404", description = "Person not found")
+    })
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> existsByCpf(
+            @Parameter(description = "CPF of the person to check", required = true)
+            @RequestParam String cpf) {
+        boolean exists = findPersonInputPort.exists(cpf);
+        return ResponseEntity.ok(exists);
     }
 }

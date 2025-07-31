@@ -4,14 +4,13 @@ import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.domain.Person;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
 public interface FindPersonOutputPort {
     Optional<Fisica> find(Long id);
 
-    Page<Fisica> findAll(int page, int size);
+    Page<Fisica> findAll(String name, String cpf, int page, int size);
 
     Optional<Person> findPerson(Long id);
 

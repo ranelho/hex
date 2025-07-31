@@ -14,6 +14,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   # API configurations for development environment
-  api:
-    viacep:
-      base-url: ${VIACEP_BASE_URL_DEV:https://viacep.com.br}
+
+api.viacep.base-url: ${VIACEP_BASE_URL_DEV:https://viacep.com.br}

@@ -3,6 +3,7 @@ package com.rlti.hex.adapters.input.api;
 import com.rlti.hex.adapters.input.api.request.AddressRequest;
 import com.rlti.hex.adapters.input.api.response.AddressResponse;
 import com.rlti.hex.application.core.domain.Address;
+import com.rlti.hex.application.port.input.FindAddressByZipCodeInputPort;
 import com.rlti.hex.application.port.input.InsertAddressToPersonInputPort;
 import com.rlti.hex.application.port.input.UpdateAddressInputPort;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +26,7 @@ public class AddressController {
 
     private final UpdateAddressInputPort updateAddressInputPort;
     private final InsertAddressToPersonInputPort insertAddressToPersonInputPort;
+    private final FindAddressByZipCodeInputPort findAddressByZipCodeInputPort;
 
     @Operation(
         summary = "Atualizar endereço",
@@ -95,5 +97,42 @@ public class AddressController {
     ) {
         Address address = insertAddressToPersonInputPort.insert(request.toDomain(), idPerson);
         return ResponseEntity.ok(new AddressResponse(address));
+    }
+
+    //buscar endereco via cep
+    @Operation(
+        summary = "Buscar endereço por CEP",
+        description = "Busca um endereço utilizando o CEP fornecido"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Endereço encontrado com sucesso",
+            content = @Content(mediaType = "application/json",
+                      schema = @Schema(implementation = AddressResponse.class))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Endereço não encontrado para o CEP fornecido",
+            content = @Content(mediaType = "application/json",
+                      schema = @Schema(implementation = Object.class))
+        ),
+        @ApiResponse(
+            responseCode = "400",
+            description = "CEP inválido",
+            content = @Content(mediaType = "application/json",
+                      schema = @Schema(implementation = Object.class))
+        )
+    })
+    @GetMapping("/zip-code/{zipCode}")
+    public ResponseEntity<AddressResponse> getAddressByZipCode(
+        @Parameter(description = "CEP do endereço a ser buscado", required = true, example = "12345-678")
+        @PathVariable String zipCode) {
+        Address address = findAddressByZipCodeInputPort.getAddressByZipCode(zipCode);
+        if (address == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(new AddressResponse(address));
+        }
     }
 }

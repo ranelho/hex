@@ -6,6 +6,7 @@ import com.rlti.hex.application.core.domain.Fisica;
 
 public interface FindPersonInputPort {
     PersonResponse find(Long id);
+    PageResult<Fisica> findAll(String name, String cpf, int page, int size);
 
-    PageResult<Fisica> findAll(int page, int size);
+    boolean exists(String cpf);
 }
