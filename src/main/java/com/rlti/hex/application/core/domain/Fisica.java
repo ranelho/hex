@@ -3,10 +3,8 @@ package com.rlti.hex.application.core.domain;
 import com.rlti.hex.handler.ResourceNotFoundException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Fisica extends Person {
     private String cpf;
@@ -55,6 +53,17 @@ public final class Fisica extends Person {
     public void updateOrAddAddress(List<Address> newAddresses) {
         if (newAddresses == null) return;
 
+        Set<Long> newIds = newAddresses.stream()
+                .map(Address::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // Remove endereços antigos que não estão na nova lista
+        addresses.removeIf(existing ->
+                existing.getId() != null && !newIds.contains(existing.getId())
+        );
+
+        // Adiciona ou atualiza os endereços da nova lista
         newAddresses.forEach(address -> {
             if (address.getId() != null) {
                 findExistingAddress(address.getId()).update(address);
@@ -75,6 +84,17 @@ public final class Fisica extends Person {
     public void updateOrAddContact(List<Contact> newContacts) {
         if (newContacts == null) return;
 
+        Set<Long> newIds = newContacts.stream()
+                .map(Contact::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // Remove contatos antigos que não estão na nova lista
+        contacts.removeIf(existing ->
+                existing.getId() != null && !newIds.contains(existing.getId())
+        );
+
+        // Adiciona ou atualiza os contatos da nova lista
         newContacts.forEach(contact -> {
             if (contact.getId() != null) {
                 findExistingContact(contact.getId()).update(contact);
@@ -84,6 +104,7 @@ public final class Fisica extends Person {
             }
         });
     }
+
 
     private Contact findExistingContact(Long id) {
         return contacts.stream()
@@ -95,6 +116,18 @@ public final class Fisica extends Person {
     public void updateOrAddDependent(List<Dependent> newDependents) {
         if (newDependents == null) return;
 
+        // IDs dos novos dependentes (os que têm ID)
+        Set<Long> newIds = newDependents.stream()
+                .map(Dependent::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // Remove dependentes antigos que não estão na nova lista
+        dependents.removeIf(existing ->
+                existing.getId() != null && !newIds.contains(existing.getId())
+        );
+
+        // Adiciona ou atualiza os dependentes da nova lista
         newDependents.forEach(dependent -> {
             if (dependent.getId() != null) {
                 findExistingDependent(dependent.getId()).update(dependent);

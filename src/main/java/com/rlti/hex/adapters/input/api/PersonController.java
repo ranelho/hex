@@ -26,7 +26,6 @@ import java.net.URI;
 @RequiredArgsConstructor
 @Tag(name = "Person", description = "Person API")
 @RequestMapping("/person")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"}) // Adicione esta anotação
 public class PersonController {
 
     private final InsertPersonInputPort insertPersonInputPort;

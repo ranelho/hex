@@ -22,10 +22,10 @@ public class FisicaEntity extends PersonEntity {
     private String nameMother;
     private String nameFather;
 
-    @OneToMany(mappedBy = "fisica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fisica", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ContactEntity> contacts;
 
-    @OneToMany(mappedBy = "fisica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fisica", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<DependentEntity> dependents;
 }
 

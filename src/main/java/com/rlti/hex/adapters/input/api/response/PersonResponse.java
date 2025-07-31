@@ -30,11 +30,11 @@ public record PersonResponse(
                         .map(AddressResponse::convertList)
                         .orElse(List.of()),
 
-                Optional.ofNullable(person.getContacts())
+                Optional.of(person.getContacts())
                         .map(ContactResponse::convertList)
                         .orElse(List.of()),
 
-                Optional.ofNullable(person.getDependents())
+                Optional.of(person.getDependents())
                         .map(DependentResponse::convertList)
                         .orElse(List.of())
         );
@@ -47,5 +47,9 @@ public record PersonResponse(
                 response.pageSize(),
                 response.totalElements()
         );
+    }
+
+    public static List<PersonResponse> convertList(List<Fisica> recentPersons) {
+        return recentPersons.stream().map(PersonResponse::new).toList();
     }
 }
