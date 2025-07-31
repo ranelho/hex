@@ -19,7 +19,7 @@ public interface FisicaJpaRepository extends JpaRepository<FisicaEntity, Long> {
 
     Page<FisicaEntity> findAllByOrderByIdDesc(Pageable pageable);
 
-    @Query(value = "SELECT AVG(EXTRACT(YEAR FROM AGE(p.birth_date))) FROM person_fisica p", nativeQuery = true)
+    @Query(value = "SELECT ROUND(AVG(EXTRACT(YEAR FROM AGE(p.birth_date)))::numeric, 1) AS average_age FROM person_fisica p", nativeQuery = true)
     Double calculateAverageAge();
 
     long countByCreatedAtAfter(LocalDate date);

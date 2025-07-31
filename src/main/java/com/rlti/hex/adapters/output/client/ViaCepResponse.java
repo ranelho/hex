@@ -3,23 +3,6 @@ package com.rlti.hex.adapters.output.client;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Classe que representa a resposta da API ViaCEP.
- * 
- * Exemplo de resposta:
- * {
- *   "cep": "01001-000",
- *   "logradouro": "Praça da Sé",
- *   "complemento": "lado ímpar",
- *   "bairro": "Sé",
- *   "localidade": "São Paulo",
- *   "uf": "SP",
- *   "ibge": "3550308",
- *   "gia": "1004",
- *   "ddd": "11",
- *   "siafi": "7107"
- * }
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ViaCepResponse {
 

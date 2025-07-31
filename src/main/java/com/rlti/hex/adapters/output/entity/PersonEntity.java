@@ -3,8 +3,9 @@ package com.rlti.hex.adapters.output.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "person_type", discriminatorType = DiscriminatorType.STRING)
-@EntityListeners(PersonEntity.class)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "person")
 public class PersonEntity {
 
@@ -27,8 +28,12 @@ public class PersonEntity {
     private List<AddressEntity> addresses;
 
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDate createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
 
     public PersonEntity() {
     }

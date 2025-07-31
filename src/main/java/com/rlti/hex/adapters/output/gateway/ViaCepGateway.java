@@ -45,7 +45,7 @@ public class ViaCepGateway implements ValidateAddressOutputPort {
     }
 
     @Override
-    @Cacheable(value = "zipCodes", cacheManager = "zipCodesCacheManager")
+    @Cacheable(value = "zipCodes")
     public Address validateAndCompleteAddress(String zipCode) {
         String formattedZipCode = formatZipCode(zipCode);
 
