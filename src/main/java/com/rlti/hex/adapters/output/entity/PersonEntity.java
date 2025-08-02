@@ -2,6 +2,7 @@ package com.rlti.hex.adapters.output.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "person_type", discriminatorType = DiscriminatorType.STRING)
 @EntityListeners(AuditingEntityListener.class)
@@ -34,7 +36,4 @@ public class PersonEntity {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDate updatedAt;
-
-    public PersonEntity() {
-    }
 }

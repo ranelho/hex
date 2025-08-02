@@ -44,6 +44,8 @@ logging:
     org.springframework.web: INFO
     org.springframework.cache: INFO
     io.github.resilience4j: INFO
+    org.springframework.kafka: INFO
+    org.apache.kafka: WARN
   # Configurações personalizadas da aplicação
   app:
   logging:
