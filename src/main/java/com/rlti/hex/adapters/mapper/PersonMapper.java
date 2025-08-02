@@ -75,9 +75,17 @@ public class PersonMapper {
         Fisica fisica = Fisica.builder()
                 .name(entity.getName())
                 .cpf(entity.getCpf())
+                .rg(entity.getRg())
+                .rgIssuer(entity.getRgIssuer())
                 .birthDate(entity.getBirthDate())
                 .nameMother(entity.getNameMother())
                 .nameFather(entity.getNameFather())
+                .maritalStatus(entity.getMaritalStatus())
+                .profession(entity.getProfession())
+                .nationality(entity.getNationality())
+                .gender(entity.getGender())
+                .emergencyContact(entity.getEmergencyContact())
+                .emergencyPhone(entity.getEmergencyPhone())
                 .build();
 
         // Definir o ID manualmente
@@ -112,9 +120,17 @@ public class PersonMapper {
         fisica = Fisica.builder()
                 .name(entity.getName())
                 .cpf(entity.getCpf())
+                .rg(entity.getRg())
+                .rgIssuer(entity.getRgIssuer())
                 .birthDate(entity.getBirthDate())
                 .nameMother(entity.getNameMother())
                 .nameFather(entity.getNameFather())
+                .maritalStatus(entity.getMaritalStatus())
+                .profession(entity.getProfession())
+                .nationality(entity.getNationality())
+                .gender(entity.getGender())
+                .emergencyContact(entity.getEmergencyContact())
+                .emergencyPhone(entity.getEmergencyPhone())
                 .addresses(addresses)
                 .contacts(contacts)
                 .dependents(dependents)
@@ -135,9 +151,17 @@ public class PersonMapper {
         entity.setId(model.getId());
         entity.setName(model.getName());
         entity.setCpf(model.getCpf());
+        entity.setRg(model.getRg());
+        entity.setRgIssuer(model.getRgIssuer());
         entity.setBirthDate(model.getBirthDate());
         entity.setNameMother(model.getNameMother());
         entity.setNameFather(model.getNameFather());
+        entity.setMaritalStatus(model.getMaritalStatus());
+        entity.setProfession(model.getProfession());
+        entity.setNationality(model.getNationality());
+        entity.setGender(model.getGender());
+        entity.setEmergencyContact(model.getEmergencyContact());
+        entity.setEmergencyPhone(model.getEmergencyPhone());
 
             entity.setContacts(model.getContacts().stream()
                 .map(contact -> {

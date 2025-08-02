@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/api/v1/enums")
+@RequestMapping("/enum")
 @Tag(name = "Enums", description = "Endpoints para buscar valores de enumerações")
 public class EnumController {
 

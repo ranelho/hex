@@ -1,5 +1,7 @@
 package com.rlti.hex.application.core.domain;
 
+import com.rlti.hex.application.core.domain.enuns.Gender;
+import com.rlti.hex.application.core.domain.enuns.MaritalStatus;
 import com.rlti.hex.handler.ResourceNotFoundException;
 
 import java.time.LocalDate;
@@ -8,9 +10,17 @@ import java.util.stream.Collectors;
 
 public final class Fisica extends Person {
     private String cpf;
+    private String rg;
+    private String rgIssuer;
     private LocalDate birthDate;
     private String nameMother;
     private String nameFather;
+    private MaritalStatus maritalStatus;
+    private String profession;
+    private String nationality;
+    private Gender gender;
+    private String emergencyContact;
+    private String emergencyPhone;
     private List<Contact> contacts;
     private List<Dependent> dependents;
 
@@ -18,9 +28,17 @@ public final class Fisica extends Person {
         super();
         this.name = builder.name;
         this.cpf = builder.cpf;
+        this.rg = builder.rg;
+        this.rgIssuer = builder.rgIssuer;
         this.birthDate = builder.birthDate;
         this.nameMother = builder.nameMother;
         this.nameFather = builder.nameFather;
+        this.maritalStatus = builder.maritalStatus;
+        this.profession = builder.profession;
+        this.nationality = builder.nationality;
+        this.gender = builder.gender;
+        this.emergencyContact = builder.emergencyContact;
+        this.emergencyPhone = builder.emergencyPhone;
 
         this.addresses = new ArrayList<>(builder.addresses != null ? builder.addresses : Collections.emptyList());
         this.contacts = new ArrayList<>(builder.contacts != null ? builder.contacts : Collections.emptyList());
@@ -42,9 +60,17 @@ public final class Fisica extends Person {
     public void update(Fisica request) {
         Objects.requireNonNull(request, "Update request cannot be null");
         this.name = request.getName();
+        this.rg = request.getRg();
+        this.rgIssuer = request.getRgIssuer();
         this.nameMother = request.getNameMother();
         this.nameFather = request.getNameFather();
         this.birthDate = request.getBirthDate();
+        this.maritalStatus = request.getMaritalStatus();
+        this.profession = request.getProfession();
+        this.nationality = request.getNationality();
+        this.gender = request.getGender();
+        this.emergencyContact = request.getEmergencyContact();
+        this.emergencyPhone = request.getEmergencyPhone();
         updateOrAddAddress(request.getAddresses());
         updateOrAddContact(request.getContacts());
         updateOrAddDependent(request.getDependents());
@@ -150,6 +176,14 @@ public final class Fisica extends Person {
         return cpf;
     }
 
+    public String getRg() {
+        return rg;
+    }
+
+    public String getRgIssuer() {
+        return rgIssuer;
+    }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }
@@ -160,6 +194,30 @@ public final class Fisica extends Person {
 
     public String getNameFather() {
         return nameFather;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public String getEmergencyPhone() {
+        return emergencyPhone;
     }
 
     public List<Contact> getContacts() {
@@ -176,9 +234,17 @@ public final class Fisica extends Person {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", cpf='" + cpf + '\'' +
+                ", rg='" + rg + '\'' +
+                ", rgIssuer='" + rgIssuer + '\'' +
                 ", birthDate=" + birthDate +
                 ", nameMother='" + nameMother + '\'' +
                 ", nameFather='" + nameFather + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", profession='" + profession + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", gender='" + gender + '\'' +
+                ", emergencyContact='" + emergencyContact + '\'' +
+                ", emergencyPhone='" + emergencyPhone + '\'' +
                 ", addresses=" + (addresses != null ? addresses.size() : 0) +
                 ", contacts=" + (contacts != null ? contacts.size() : 0) +
                 ", dependents=" + (dependents != null ? dependents.size() : 0) +
@@ -191,9 +257,17 @@ public final class Fisica extends Person {
     public static final class Builder {
         private String name;
         private String cpf;
+        private String rg;
+        private String rgIssuer;
         private LocalDate birthDate;
         private String nameMother;
         private String nameFather;
+        private MaritalStatus maritalStatus;
+        private String profession;
+        private String nationality;
+        private Gender gender;
+        private String emergencyContact;
+        private String emergencyPhone;
         private List<Address> addresses;
         private List<Contact> contacts;
         private List<Dependent> dependents;
@@ -211,6 +285,16 @@ public final class Fisica extends Person {
             return this;
         }
 
+        public Builder rg(String rg) {
+            this.rg = rg;
+            return this;
+        }
+
+        public Builder rgIssuer(String rgIssuer) {
+            this.rgIssuer = rgIssuer;
+            return this;
+        }
+
         public Builder birthDate(LocalDate birthDate) {
             this.birthDate = birthDate;
             return this;
@@ -223,6 +307,36 @@ public final class Fisica extends Person {
 
         public Builder nameFather(String nameFather) {
             this.nameFather = nameFather;
+            return this;
+        }
+
+        public Builder maritalStatus(MaritalStatus maritalStatus) {
+            this.maritalStatus = maritalStatus;
+            return this;
+        }
+
+        public Builder profession(String profession) {
+            this.profession = profession;
+            return this;
+        }
+
+        public Builder nationality(String nationality) {
+            this.nationality = nationality;
+            return this;
+        }
+
+        public Builder gender(Gender gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public Builder emergencyContact(String emergencyContact) {
+            this.emergencyContact = emergencyContact;
+            return this;
+        }
+
+        public Builder emergencyPhone(String emergencyPhone) {
+            this.emergencyPhone = emergencyPhone;
             return this;
         }
 
@@ -251,9 +365,17 @@ public final class Fisica extends Person {
         public record BuilderPrototype(
                 String name,
                 String cpf,
+                String rg,
+                String rgIssuer,
                 LocalDate birthDate,
                 String nameMother,
                 String nameFather,
+                MaritalStatus maritalStatus,
+                String profession,
+                String nationality,
+                Gender gender,
+                String emergencyContact,
+                String emergencyPhone,
                 List<Address> addresses,
                 List<Contact> contacts,
                 List<Dependent> dependents
