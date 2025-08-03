@@ -31,30 +31,18 @@ public class PersonCreatedEventConsumer {
             log.info("Received person created event from topic: {}, partition: {}, offset: {}, personId: {}", 
                 topic, partition, offset, event.getPersonId());
             
-            // Aqui você pode implementar a lógica de negócio para processar o evento
-            // Por exemplo:
-            // - Enviar email de boas-vindas
-            // - Criar perfil em outros sistemas
-            // - Atualizar cache
-            // - Gerar relatórios
-            
             processPersonCreatedEvent(event);
-            
-            // Confirma o processamento da mensagem
             acknowledgment.acknowledge();
             
             log.info("Successfully processed person created event for person ID: {}", event.getPersonId());
             
         } catch (Exception e) {
             log.error("Error processing person created event for person ID: {}", event.getPersonId(), e);
-            // Em caso de erro, você pode decidir se quer fazer retry ou enviar para DLQ
-            // Por enquanto, vamos apenas logar o erro e não fazer acknowledge
-            throw e; // Isso fará com que o Kafka tente reprocessar a mensagem
+            throw e;
         }
     }
     
     private void processPersonCreatedEvent(PersonCreatedEvent event) {
-        // Simula processamento do evento
         log.info("Processing person created event:");
         log.info("  - Person ID: {}", event.getPersonId());
         log.info("  - Name: {}", event.getName());
@@ -62,30 +50,22 @@ public class PersonCreatedEventConsumer {
         log.info("  - Email: {}", event.getEmail());
         log.info("  - Created At: {}", event.getCreatedAt());
         
-        // Aqui você implementaria a lógica específica do seu domínio
-        // Exemplos:
         sendWelcomeEmail(event);
         updateAnalytics(event);
         notifyOtherSystems(event);
     }
     
     private void sendWelcomeEmail(PersonCreatedEvent event) {
-        // Simula envio de email de boas-vindas
         if (event.getEmail() != null && !event.getEmail().isEmpty()) {
             log.info("Sending welcome email to: {} for person: {}", event.getEmail(), event.getName());
-            // Aqui você integraria com um serviço de email
         }
     }
     
     private void updateAnalytics(PersonCreatedEvent event) {
-        // Simula atualização de analytics
         log.info("Updating analytics for new person registration: {}", event.getPersonId());
-        // Aqui você integraria com um serviço de analytics
     }
     
     private void notifyOtherSystems(PersonCreatedEvent event) {
-        // Simula notificação para outros sistemas
         log.info("Notifying other systems about new person: {}", event.getPersonId());
-        // Aqui você integraria com outros sistemas/microserviços
     }
 }

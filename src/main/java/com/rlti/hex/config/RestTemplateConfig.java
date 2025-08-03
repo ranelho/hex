@@ -13,10 +13,9 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        // Usa SimpleClientHttpRequestFactory que é compatível com todas as versões
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(5000); // 5 segundos
-        factory.setReadTimeout(5000); // 5 segundos
+        factory.setConnectTimeout(5000);
+        factory.setReadTimeout(5000);
 
         return new RestTemplate(factory);
     }

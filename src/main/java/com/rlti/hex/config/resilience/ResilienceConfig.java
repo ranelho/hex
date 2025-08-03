@@ -18,9 +18,9 @@ public class ResilienceConfig {
     @Bean
     public CircuitBreakerRegistry circuitBreakerRegistry() {
         CircuitBreakerConfig config = CircuitBreakerConfig.custom()
-                .failureRateThreshold(50) // Limite de taxa de falha para abrir o circuit breaker
-                .waitDurationInOpenState(Duration.ofSeconds(10)) // Tempo que o circuit breaker permanecerá aberto
-                .slidingWindowSize(10) // Número de chamadas para considerar ao calcular a taxa de falha
+                .failureRateThreshold(50)
+        .waitDurationInOpenState(Duration.ofSeconds(10))
+        .slidingWindowSize(10)
                 .build();
 
         return CircuitBreakerRegistry.of(config);

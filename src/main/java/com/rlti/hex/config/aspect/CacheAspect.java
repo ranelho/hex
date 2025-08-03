@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-/**
- * Aspecto que gerencia o cache para métodos anotados com @Cached.
- */
 @Aspect
 @Component
 public class CacheAspect {
@@ -50,7 +47,6 @@ public class CacheAspect {
             }
         }
 
-        // Cache miss, execute method and store result
         Object result = joinPoint.proceed();
         if (cache != null && result != null) {
             logger.debug("Caching result of method {} with key {}", method.getName(), cacheKey);

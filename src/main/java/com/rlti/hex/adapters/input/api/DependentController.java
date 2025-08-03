@@ -105,7 +105,6 @@ public class DependentController {
         return ResponseEntity.ok(new DependentResponse(dependent));
     }
 
-    //cria um endpoint para buscar DependentType a descrição do tipo de dependente
     @Operation(
             summary = "Buscar tipos de dependentes",
             description = "Retorna uma lista de todos os tipos de dependentes disponíveis"

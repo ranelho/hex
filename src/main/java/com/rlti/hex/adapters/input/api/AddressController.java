@@ -99,7 +99,6 @@ public class AddressController {
         return ResponseEntity.ok(new AddressResponse(address));
     }
 
-    //buscar endereco via cep
     @Operation(
         summary = "Buscar endereço por CEP",
         description = "Busca um endereço utilizando o CEP fornecido"

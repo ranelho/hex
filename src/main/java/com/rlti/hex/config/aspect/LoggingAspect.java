@@ -41,7 +41,6 @@ public class LoggingAspect {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        // Configurar para não falhar em referências circulares
         this.objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
     }
 
@@ -57,16 +56,13 @@ public class LoggingAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
-        // Obter configuração de monitoramento
         Monitored monitoredAnnotation = method.getAnnotation(Monitored.class);
         if (monitoredAnnotation == null) {
             monitoredAnnotation = method.getDeclaringClass().getAnnotation(Monitored.class);
         }
 
-        // Gerar ID único para esta execução
         String executionId = UUID.randomUUID().toString();
 
-        // Criar contexto de execução
         MethodExecutionContext context = new MethodExecutionContext(
                 joinPoint.getTarget().getClass().getSimpleName(),
                 method.getName(),
@@ -79,25 +75,20 @@ public class LoggingAspect {
 
         activeExecutions.put(executionId, context);
 
-        // Adicionar informações ao MDC para facilitar correlação nos logs
         MDC.put("executionId", executionId);
         MDC.put("className", context.className);
         MDC.put("methodName", context.methodName);
 
         try {
-            // Registrar início da execução
             logExecutionStart(context, joinPoint, monitoredAnnotation);
 
-            // Executar o método
             Object result = joinPoint.proceed();
 
-            // Registrar fim da execução
             long elapsedTime = System.currentTimeMillis() - context.startTime;
             logExecutionEnd(context, elapsedTime, result, monitoredAnnotation);
 
             return result;
         } catch (Throwable e) {
-            // Registrar erro
             long elapsedTime = System.currentTimeMillis() - context.startTime;
             logExecutionError(context, elapsedTime, e);
             throw e;
@@ -175,7 +166,6 @@ public class LoggingAspect {
                 .append(" - ")
                 .append(context.methodName);
 
-        // Adicionar status code para ResponseEntity
         if (result instanceof ResponseEntity) {
             int statusCode = ((ResponseEntity<?>) result).getStatusCode().value();
             logMessage.append(" - Status: ")
@@ -195,18 +185,15 @@ public class LoggingAspect {
                 if (config.level() == LogLevel.DETAILED || config.level() == LogLevel.TRACE) {
                     String resultStr;
 
-                    // Usar toString() para objetos de domínio para evitar problemas de serialização
                     if (result instanceof PageResult) {
                         resultStr = result.toString();
                     } else if (result instanceof ResponseEntity && ((ResponseEntity<?>) result).getBody() != null) {
                         Object body = ((ResponseEntity<?>) result).getBody();
-                        // Verificar se o corpo é um objeto de domínio com toString implementado
                         resultStr = getObjectString(body);
                     } else {
                         resultStr = getObjectString(result);
                     }
 
-                    // Limitar tamanho da resposta no log
                     if (resultStr.length() > 1000) {
                         resultStr = resultStr.substring(0, 997) + "...";
                     }
@@ -249,7 +236,6 @@ public class LoggingAspect {
             return "null";
         }
 
-        // Se o objeto for do nosso domínio, usar toString() implementado
         if (obj instanceof com.rlti.hex.application.core.domain.Person ||
             obj instanceof com.rlti.hex.application.core.domain.Address ||
             obj instanceof com.rlti.hex.application.core.domain.Contact ||
@@ -258,7 +244,6 @@ public class LoggingAspect {
             return obj.toString();
         }
 
-        // Para outros objetos, tentar serialização JSON com tratamento de erro
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (Exception e) {

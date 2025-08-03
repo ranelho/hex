@@ -23,13 +23,11 @@ public class CacheConfig {
     public CacheManager cacheManager() {
         Map<String, CaffeineCache> cacheMap = new HashMap<>();
 
-        // Cache padrão (pode ser usado para persons, addresses, etc.)
         Caffeine<Object, Object> defaultCacheBuilder = Caffeine.newBuilder()
                 .maximumSize(500)
                 .expireAfterAccess(1, TimeUnit.MINUTES)
                 .recordStats();
 
-        // Cache de CEPs (com tempo maior)
         Caffeine<Object, Object> zipCodeCacheBuilder = Caffeine.newBuilder()
                 .maximumSize(1000)
                 .expireAfterWrite(24, TimeUnit.HOURS)

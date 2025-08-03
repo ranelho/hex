@@ -25,7 +25,6 @@ public class KafkaConfig {
     @Value("${spring.kafka.consumer.group-id:hex-group}")
     private String groupId;
 
-    // Producer Configuration
     @Bean
     public ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -43,7 +42,6 @@ public class KafkaConfig {
         return new KafkaTemplate<>(producerFactory());
     }
 
-    // Consumer Configuration
     @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> props = new HashMap<>();

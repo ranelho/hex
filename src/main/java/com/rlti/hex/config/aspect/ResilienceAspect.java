@@ -45,10 +45,7 @@ public class ResilienceAspect {
 
         long timeout = resilientAnnotation.timeoutInMs();
 
-        // Obter ou criar circuit breaker
         CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker(circuitBreakerName);
-
-        // Decorar a função com circuit breaker
         Supplier<Object> decoratedSupplier = CircuitBreaker.decorateSupplier(circuitBreaker, () -> {
             try {
                 return joinPoint.proceed();
@@ -58,7 +55,6 @@ public class ResilienceAspect {
         });
 
         try {
-            // Executar com timeout
             CompletableFuture<Object> future = CompletableFuture.supplyAsync(decoratedSupplier);
             return future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {

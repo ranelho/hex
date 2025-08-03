@@ -13,10 +13,6 @@ import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-/**
- * Aspecto que gerencia a execução assíncrona para métodos anotados com @Async.
- * Utiliza os Virtual Threads do Java 21 para melhorar a performance.
- */
 @Aspect
 @Component
 public class AsyncAspect {
@@ -38,7 +34,6 @@ public class AsyncAspect {
 
         Executor executor = applicationContext.getBean(executorName, Executor.class);
 
-        // Verifica se o método retorna CompletableFuture
         boolean returnsCompletableFuture = CompletableFuture.class.isAssignableFrom(method.getReturnType());
 
         if (returnsCompletableFuture) {
@@ -51,7 +46,6 @@ public class AsyncAspect {
                 }
             }, executor);
         } else {
-            // Se não retorna CompletableFuture, executa de forma assíncrona e retorna null
             executor.execute(() -> {
                 try {
                     joinPoint.proceed();

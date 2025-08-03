@@ -12,11 +12,9 @@ public class Address {
 
     private Person person;
 
-    // Construtor padrão para frameworks
     public Address() {
     }
 
-    // Construtor privado usado pelo Builder
     private Address(Builder builder) {
         this.id = builder.id;
         this.street = builder.street;
@@ -29,12 +27,6 @@ public class Address {
         this.person = builder.person;
     }
 
-    /**
-     * Construtor que utiliza AddressData para encapsular todos os campos de endereço
-     *
-     * @param id   o ID do endereço
-     * @param data objeto que encapsula todos os dados do endereço
-     */
     public Address(Long id, AddressData data) {
         this(builder()
                 .id(id)
@@ -47,17 +39,10 @@ public class Address {
                 .number(data.number()));
     }
 
-    // Método estático para criar um Builder
     public static Builder builder() {
         return new Builder();
     }
 
-    /**
-     * Cria um novo endereço a partir de dados encapsulados.
-     *
-     * @param data os dados do endereço
-     * @return um novo objeto Address
-     */
     public static Address createAddress(AddressData data) {
         return builder()
                 .street(data.street())
@@ -70,13 +55,6 @@ public class Address {
                 .build();
     }
 
-    /**
-     * Cria um novo endereço associado a uma pessoa.
-     *
-     * @param person a pessoa associada ao endereço
-     * @param data   os dados do endereço
-     * @return um novo objeto Address
-     */
     public static Address createAddressForPerson(Person person, AddressData data) {
         return builder()
                 .person(person)
@@ -90,17 +68,9 @@ public class Address {
                 .build();
     }
 
-    /**
-     * Atualiza os campos deste endereço com os valores de outro endereço.
-     * Mantém o id e a pessoa associada intactos.
-     *
-     * @param address o endereço fonte dos dados
-     */
     public void update(Address address) {
-        // Extrair os dados do endereço para um AddressData
         AddressData data = AddressData.from(address);
 
-        // Atualizar os campos usando os dados extraídos
         this.street = data.street();
         this.city = data.city();
         this.state = data.state();
@@ -109,8 +79,6 @@ public class Address {
         this.country = data.country();
         this.number = data.number();
     }
-
-    // O método toBuilder() foi removido por não estar sendo utilizado
 
     public Long getId() {
         return id;
@@ -197,9 +165,6 @@ public class Address {
                 '}';
     }
 
-    /**
-     * Classe Builder para construção fluente de objetos Address.
-     */
     public static class Builder {
         private Long id;
         private String street;

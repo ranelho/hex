@@ -19,12 +19,10 @@ public record AddressRequest(
         String number
 ) {
     public Address toDomain() {
-        // Criar AddressData para encapsular todos os dados de endereço
         AddressData data = new AddressData(
             street, city, state, neighborhood, zipCode, country, number
         );
 
-        // Usar o builder para evitar o construtor com muitos parâmetros
         return Address.builder()
             .id(id)
             .street(data.street())

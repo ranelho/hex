@@ -29,17 +29,13 @@ public class InsertAddressToPersonUseCase implements InsertAddressToPersonInputP
 
     @Override
     public Address insert(Address address, Long idPerson) {
-        // Busca a pessoa pelo ID
         var person = findPersonByIdUseCase.findPerson(idPerson)
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found"));
 
-        // Complementa o endereço com dados do serviço externo, usando o serviço dedicado
         addressEnrichmentService.complementAddressData(address);
 
-        // Associa o endereço à pessoa
         address.setPerson(person);
 
-        // Persiste o endereço
         return insertAddressToPersonOutputPort.insert(address);
     }
 

@@ -48,7 +48,6 @@ public class InsertPersonUseCase implements InsertPersonInputPort {
 
         Fisica savedPerson = outputPort.insert(request);
         
-        // Publicar evento após o cadastro bem-sucedido
         try {
             String email = getPersonEmail(savedPerson);
             PersonCreatedEvent event = new PersonCreatedEvent(
@@ -63,7 +62,7 @@ public class InsertPersonUseCase implements InsertPersonInputPort {
             
         } catch (Exception e) {
             log.error("Failed to publish person created event for person ID: {}", savedPerson.getId(), e);
-            // Não falha a operação se o evento não for publicado
+            
         }
         
         return savedPerson;

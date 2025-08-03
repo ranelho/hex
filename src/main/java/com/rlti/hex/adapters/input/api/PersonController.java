@@ -96,7 +96,6 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-    //criar um endpoint para validar se existe pessoa com o cpf informado
     @Operation(summary = "Check if person exists by CPF", description = "Check if a person exists with the provided CPF")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Person exists"),

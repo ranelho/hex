@@ -12,12 +12,10 @@ public record AddressData(
     String country,
     String number
 ) {
-    // Construtor vazio para facilitar a criação
     public static AddressData empty() {
         return new AddressData(null, null, null, null, null, null, null);
     }
 
-    // Cria uma cópia com os dados de um objeto Address existente
     public static AddressData from(Address address) {
         return new AddressData(
             address.getStreet(),

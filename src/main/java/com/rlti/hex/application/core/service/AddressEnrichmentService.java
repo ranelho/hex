@@ -36,7 +36,6 @@ public class AddressEnrichmentService implements AddressEnrichmentInputPort {
     public void complementAddressesData(List<Address> addresses) {
         if (addresses == null || addresses.isEmpty()) return;
 
-        // Para cada endereço, tenta complementar os dados
         addresses.forEach(this::complementAddressData);
     }
 
@@ -59,7 +58,6 @@ public class AddressEnrichmentService implements AddressEnrichmentInputPort {
             mergeAddressData(address, validatedAddress);
             logger.info("Endereço complementado com sucesso via serviço externo para o CEP: {}", zipCode);
         } catch (Exception e) {
-            // Em caso de erro, apenas loga e continua o fluxo
             logger.warn("Não foi possível complementar o endereço via serviço externo: {}", e.getMessage());
         }
     }
@@ -72,10 +70,7 @@ public class AddressEnrichmentService implements AddressEnrichmentInputPort {
      * @param validatedAddress o endereço validado com os dados a serem mesclados
      */
     private void mergeAddressData(Address originalAddress, Address validatedAddress) {
-        // Criar um AddressData a partir do endereço validado
         AddressData validatedData = AddressData.from(validatedAddress);
-
-        // Atualizar os campos individualmente
         updateFieldIfEmpty(originalAddress::getStreet, originalAddress::setStreet, validatedData.street());
         updateFieldIfEmpty(originalAddress::getNeighborhood, originalAddress::setNeighborhood, validatedData.neighborhood());
         updateFieldIfEmpty(originalAddress::getCity, originalAddress::setCity, validatedData.city());

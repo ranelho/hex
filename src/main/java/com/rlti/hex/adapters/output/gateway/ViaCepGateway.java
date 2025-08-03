@@ -6,6 +6,7 @@ import com.rlti.hex.application.port.output.ValidateAddressOutputPort;
 import com.rlti.hex.config.aspect.Monitored;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,11 +18,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-/**
- * Gateway para integração com a API ViaCEP.
- */
 @Component
 @Monitored
+@RequiredArgsConstructor
 public class ViaCepGateway implements ValidateAddressOutputPort {
 
     private static final Logger logger = LoggerFactory.getLogger(ViaCepGateway.class);
@@ -32,17 +31,6 @@ public class ViaCepGateway implements ValidateAddressOutputPort {
 
     private final RestTemplate restTemplate;
     private final CircuitBreaker circuitBreaker;
-
-    /**
-     * Construtor que recebe as dependências necessárias.
-     * 
-     * @param restTemplate cliente HTTP para comunicação com APIs externas
-     * @param viaCepCircuitBreaker circuit breaker para a API ViaCEP
-     */
-    public ViaCepGateway(RestTemplate restTemplate, CircuitBreaker viaCepCircuitBreaker) {
-        this.restTemplate = restTemplate;
-        this.circuitBreaker = viaCepCircuitBreaker;
-    }
 
     @Override
     @Cacheable(value = "zipCodes")
@@ -81,20 +69,17 @@ public class ViaCepGateway implements ValidateAddressOutputPort {
         String formattedZipCode = formatZipCode(zipCode);
 
         try {
-            // Definir a lógica de validação como um BooleanSupplier
             BooleanSupplier validationLogic = () -> {
                 String url = viaCepBaseUrl + ZIP_CODE_ENDPOINT.replace("{zipCode}", formattedZipCode);
                 ViaCepResponse response = restTemplate.getForObject(url, ViaCepResponse.class);
                 return response != null && response.isValid();
             };
 
-            // Adaptar o BooleanSupplier para uso com o circuit breaker 
-            // e converter o resultado de volta para um BooleanSupplier em uma única expressão
             return circuitBreaker.decorateSupplier(validationLogic::getAsBoolean).get();
 
         } catch (Exception e) {
             logger.warn("Erro ao validar CEP: {}", e.getMessage());
-            return true; // Considera válido em caso de erro para não bloquear o fluxo
+            return true;
         }
     }
 
@@ -119,7 +104,6 @@ public class ViaCepGateway implements ValidateAddressOutputPort {
         if (zipCode == null) {
             return "";
         }
-        // Remove caracteres não numéricos
         return zipCode.replaceAll("\\D", "");
     }
 }

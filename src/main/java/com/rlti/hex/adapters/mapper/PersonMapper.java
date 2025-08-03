@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-// Stream.toList() não requer importação especial no Java 21
+
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class PersonMapper {
         person.setId(entity.getId());
         person.setName(entity.getName());
 
-        // Addresses são tratados separadamente para evitar referência circular
+    
         return person;
     }
 
@@ -39,12 +39,12 @@ public class PersonMapper {
         entity.setId(model.getId());
         entity.setName(model.getName());
 
-        // Mapear addresses se existirem
+
         if (model.getAddresses() != null) {
             entity.setAddresses(model.getAddresses().stream()
                     .map(address -> {
                         var addressEntity = addressMapper.toEntity(address);
-                        addressEntity.setPerson(entity); // Definindo a referência circular
+                        addressEntity.setPerson(entity);
                         return addressEntity;
                     })
                     .toList());
@@ -53,13 +53,12 @@ public class PersonMapper {
         return entity;
     }
 
-    // Método modificado para usar com Person genérica, mas não com Fisica que tem seu próprio gerenciamento
     public void mapAddresses(Person target, PersonEntity source) {
         if (source.getAddresses() != null && !(target instanceof Fisica)) {
             target.setAddresses(source.getAddresses().stream()
                     .map(addressEntity -> {
                         Address address = addressMapper.toModel(addressEntity);
-                        address.setPerson(target); // Definindo a referência circular aqui
+                        address.setPerson(target);
                         return address;
                     })
                     .toList());
@@ -71,7 +70,7 @@ public class PersonMapper {
             return null;
         }
 
-        // Usar o builder de Fisica já que a classe Fisica é imutável e utiliza Builder pattern
+
         Fisica fisica = Fisica.builder()
                 .name(entity.getName())
                 .cpf(entity.getCpf())
@@ -88,16 +87,14 @@ public class PersonMapper {
                 .emergencyPhone(entity.getEmergencyPhone())
                 .build();
 
-        // Definir o ID manualmente
+
         fisica.setId(entity.getId());
 
-        // Como a classe Fisica gerencia suas próprias relações, precisamos usar o método de atualização
         List<Contact> contacts = null;
         if (entity.getContacts() != null) {
             contacts = entity.getContacts().stream()
                     .map(contactMapper::toModel)
                     .toList();
-            // As referências circulares serão configuradas pelo método setupRelationships() dentro da classe Fisica
         }
 
         List<Dependent> dependents = null;
@@ -105,7 +102,6 @@ public class PersonMapper {
             dependents = entity.getDependents().stream()
                     .map(dependentMapper::toModel)
                     .toList();
-            // As referências circulares serão configuradas pelo método setupRelationships() dentro da classe Fisica
         }
 
         List<Address> addresses = null;
@@ -113,10 +109,9 @@ public class PersonMapper {
             addresses = entity.getAddresses().stream()
                     .map(addressMapper::toModel)
                     .toList();
-            // As referências circulares serão configuradas pelo método setupRelationships() dentro da classe Fisica
         }
 
-        // Reconstruir a Fisica com as coleções completas
+
         fisica = Fisica.builder()
                 .name(entity.getName())
                 .cpf(entity.getCpf())
@@ -136,7 +131,7 @@ public class PersonMapper {
                 .dependents(dependents)
                 .build();
 
-        // Definir o ID manualmente
+
         fisica.setId(entity.getId());
 
         return fisica;
@@ -166,28 +161,28 @@ public class PersonMapper {
             entity.setContacts(model.getContacts().stream()
                 .map(contact -> {
                     var contactEntity = contactMapper.toEntity(contact);
-                    contactEntity.setFisica(entity); // Definindo a referência circular
+                    contactEntity.setFisica(entity);
                     return contactEntity;
                 })
                 .toList());
 
-        // Mapeando dependentes manualmente
+
         if (model.getDependents() != null) {
             entity.setDependents(model.getDependents().stream()
                     .map(dependent -> {
                         var dependentEntity = dependentMapper.toEntity(dependent);
-                        dependentEntity.setFisica(entity); // Definindo a referência circular
+                        dependentEntity.setFisica(entity);
                         return dependentEntity;
                     })
                     .toList());
         }
 
-        // Mapeando addresses
+
         if (model.getAddresses() != null) {
             entity.setAddresses(model.getAddresses().stream()
                     .map(address -> {
                         var addressEntity = addressMapper.toEntity(address);
-                        addressEntity.setPerson(entity); // Definindo a referência circular
+                        addressEntity.setPerson(entity);
                         return addressEntity;
                     })
                     .toList());
@@ -204,12 +199,12 @@ public class PersonMapper {
         entity.setId(person.getId());
         entity.setName(person.getName());
 
-        // Mapear addresses se existirem
+
         if (person.getAddresses() != null) {
             entity.setAddresses(person.getAddresses().stream()
                     .map(address -> {
                         var addressEntity = addressMapper.toEntity(address);
-                        addressEntity.setPerson(entity); // Definindo a referência circular
+                        addressEntity.setPerson(entity);
                         return addressEntity;
                     })
                     .toList());
@@ -230,12 +225,12 @@ public class PersonMapper {
             fisicaEntity.setId(model.getId());
             fisicaEntity.setName(model.getName());
 
-            // Mapear addresses se existirem
+    
             if (model.getAddresses() != null) {
                 fisicaEntity.setAddresses(model.getAddresses().stream()
                         .map(address -> {
                             var addressEntity = addressMapper.toEntity(address);
-                            addressEntity.setPerson(fisicaEntity); // Definindo a referência circular
+                            addressEntity.setPerson(fisicaEntity);
                             return addressEntity;
                         })
                         .toList());
@@ -247,7 +242,7 @@ public class PersonMapper {
 
     public void setFisicaId(Fisica target, FisicaEntity source) {
         if (source != null && source.getId() != null && target != null) {
-            // Como Fisica é imutável exceto por setId, apenas definimos o ID
+    
             target.setId(source.getId());
         }
     }

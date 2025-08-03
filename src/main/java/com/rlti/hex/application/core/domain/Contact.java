@@ -60,17 +60,13 @@ public class Contact {
         if (telephoneNumber == null || telephoneNumber.isBlank()) {
             throw new IllegalArgumentException("Telefone é obrigatório");
         }
-        // Telefones corporativos: 0800, 4004, 3003, 3004, 0800X, etc
         if (telephoneNumber.startsWith("0800") || telephoneNumber.startsWith("4004") ||
             telephoneNumber.startsWith("3003") || telephoneNumber.startsWith("3004")) {
-            // Não exige DDD
             return;
         }
-        // Celular: 9 dígitos, DDD obrigatório
         if (telephoneNumber.length() == 9 && ddd != null && !ddd.isBlank()) {
             return;
         }
-        // Fixo: 8 dígitos, DDD obrigatório
         if (telephoneNumber.length() == 8 && ddd != null && !ddd.isBlank()) {
             return;
         }
