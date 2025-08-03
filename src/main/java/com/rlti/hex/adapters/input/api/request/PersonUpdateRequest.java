@@ -4,7 +4,6 @@ import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.domain.enuns.Gender;
 import com.rlti.hex.application.core.domain.enuns.MaritalStatus;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 
 import java.time.LocalDate;

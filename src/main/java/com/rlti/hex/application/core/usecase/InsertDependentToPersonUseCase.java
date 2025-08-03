@@ -1,7 +1,6 @@
 package com.rlti.hex.application.core.usecase;
 
 import com.rlti.hex.application.core.domain.Dependent;
-import com.rlti.hex.application.core.domain.enuns.DependentType;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.InsertDependentToPersonInputPort;
 import com.rlti.hex.application.port.output.FindPersonOutputPort;
