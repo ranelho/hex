@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: ${DB_HOST_DEV}
-    username: ${DB_USERNAME_DEV}
-    password: ${DB_PASSWORD_DEV}
+    url: jdbc:postgresql://${DB_HOST_DEV:localhost:5432/hexdev}
+    username: ${DB_USERNAME_DEV:postgres}
+    password: ${DB_PASSWORD_DEV:postgres}
   jpa:
     generate-ddl: true
     properties:
@@ -17,7 +17,8 @@ spring:
   
   # Configurações do Apache Kafka para desenvolvimento
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS_DEV:kafka:9092}
+    enabled: ${KAFKA_ENABLED_DEV:false}
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS_DEV:localhost:9092}
     consumer:
       group-id: ${KAFKA_CONSUMER_GROUP_ID_DEV:hex-group-dev}
       auto-offset-reset: earliest
@@ -35,6 +36,46 @@ spring:
         enable.idempotence: true
 
 api.viacep.base-url: ${VIACEP_BASE_URL_DEV:https://viacep.com.br}
+
+# Resilience4j Circuit Breaker configurations for development
+resilience4j:
+  circuitbreaker:
+    instances:
+      viaCepCircuitBreaker:
+        register-health-indicator: true
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      personServiceCircuitBreaker:
+        register-health-indicator: true
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      addressServiceCircuitBreaker:
+        register-health-indicator: true
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      contactServiceCircuitBreaker:
+        register-health-indicator: true
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      dependentServiceCircuitBreaker:
+        register-health-indicator: true
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
 
 # Tópicos do Kafka para desenvolvimento
 kafka:

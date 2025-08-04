@@ -27,22 +27,8 @@ public class ResilienceConfig {
     }
 
     @Bean
-    public CircuitBreaker personServiceCircuitBreaker(CircuitBreakerRegistry registry) {
-        return registry.circuitBreaker("personService");
+    public CircuitBreaker viaCepCircuitBreaker(CircuitBreakerRegistry circuitBreakerRegistry) {
+        return circuitBreakerRegistry.circuitBreaker("viaCepCircuitBreaker");
     }
 
-    @Bean
-    public CircuitBreaker addressServiceCircuitBreaker(CircuitBreakerRegistry registry) {
-        return registry.circuitBreaker("addressService");
-    }
-
-    @Bean
-    public CircuitBreaker contactServiceCircuitBreaker(CircuitBreakerRegistry registry) {
-        return registry.circuitBreaker("contactService");
-    }
-
-    @Bean
-    public CircuitBreaker dependentServiceCircuitBreaker(CircuitBreakerRegistry registry) {
-        return registry.circuitBreaker("dependentService");
-    }
 }
