@@ -1,0 +1,40 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+  
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+api:
+  viacep:
+    base-url: http://localhost:8080/mock
+
+logging:
+  level:
+    com.rlti.hex: WARN
+    org.springframework: WARN
+    org.hibernate: WARN
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      viaCepCircuitBreaker:
+        enabled: false
