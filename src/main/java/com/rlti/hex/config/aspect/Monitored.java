@@ -1,5 +1,6 @@
 package com.rlti.hex.config.aspect;
 
+import com.rlti.hex.application.core.domain.constants.ApplicationConstants;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -32,7 +33,7 @@ public @interface Monitored {
      * Limite de tempo em milissegundos para considerar a execução como lenta.
      * Quando a execução ultrapassar este tempo, será logado como WARNING.
      */
-    long slowExecutionThresholdMs() default 1000;
+    long slowExecutionThresholdMs() default ApplicationConstants.Monitoring.DEFAULT_SLOW_EXECUTION_THRESHOLD_MS;
 
     /**
      * Níveis de detalhamento disponíveis para o log.

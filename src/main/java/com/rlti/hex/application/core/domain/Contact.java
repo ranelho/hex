@@ -1,5 +1,8 @@
 package com.rlti.hex.application.core.domain;
 
+import com.rlti.hex.application.core.domain.constants.ApplicationConstants;
+import com.rlti.hex.application.core.domain.messages.ErrorMessages;
+
 public class Contact {
     private Long id;
     private String email;
@@ -58,19 +61,25 @@ public class Contact {
 
     private void validatePhone(String ddd, String telephoneNumber) {
         if (telephoneNumber == null || telephoneNumber.isBlank()) {
-            throw new IllegalArgumentException("Telefone é obrigatório");
+            throw new IllegalArgumentException(ErrorMessages.Phone.REQUIRED);
         }
-        if (telephoneNumber.startsWith("0800") || telephoneNumber.startsWith("4004") ||
-            telephoneNumber.startsWith("3003") || telephoneNumber.startsWith("3004")) {
+
+        // Remove hyphen from the telephone number before validation
+        telephoneNumber = telephoneNumber.replace(ApplicationConstants.Phone.PHONE_SEPARATOR, "");
+
+        if (telephoneNumber.startsWith(ApplicationConstants.Phone.TOLL_FREE_PREFIX_0800) || 
+                telephoneNumber.startsWith(ApplicationConstants.Phone.TOLL_FREE_PREFIX_4004) ||
+                telephoneNumber.startsWith(ApplicationConstants.Phone.TOLL_FREE_PREFIX_3003) || 
+                telephoneNumber.startsWith(ApplicationConstants.Phone.TOLL_FREE_PREFIX_3004)) {
             return;
         }
-        if (telephoneNumber.length() == 9 && ddd != null && !ddd.isBlank()) {
+        if (telephoneNumber.length() == ApplicationConstants.Phone.MOBILE_PHONE_LENGTH && ddd != null && !ddd.isBlank()) {
             return;
         }
-        if (telephoneNumber.length() == 8 && ddd != null && !ddd.isBlank()) {
+        if (telephoneNumber.length() == ApplicationConstants.Phone.LANDLINE_PHONE_LENGTH && ddd != null && !ddd.isBlank()) {
             return;
         }
-        throw new IllegalArgumentException("Telefone ou DDD inválido para o tipo informado");
+        throw new IllegalArgumentException(ErrorMessages.Phone.INVALID_DDD_OR_NUMBER);
     }
 
     public Long getId() {

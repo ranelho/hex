@@ -1,6 +1,7 @@
 package com.rlti.hex.config.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.rlti.hex.application.core.domain.constants.ApplicationConstants;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -29,8 +30,8 @@ public class CacheConfig {
                 .recordStats();
 
         Caffeine<Object, Object> zipCodeCacheBuilder = Caffeine.newBuilder()
-                .maximumSize(1000)
-                .expireAfterWrite(24, TimeUnit.HOURS)
+                .maximumSize(ApplicationConstants.Cache.DEFAULT_MAX_SIZE)
+                .expireAfterWrite(ApplicationConstants.Cache.DEFAULT_TTL_SECONDS, TimeUnit.SECONDS)
                 .recordStats();
 
         cacheMap.put("persons", new CaffeineCache("persons", defaultCacheBuilder.build()));

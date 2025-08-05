@@ -3,6 +3,7 @@ package com.rlti.hex.config.aspect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.rlti.hex.adapters.input.api.response.PageResult;
+import com.rlti.hex.application.core.domain.constants.ApplicationConstants;
 import com.rlti.hex.config.aspect.Monitored.LogLevel;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -194,7 +195,7 @@ public class LoggingAspect {
                         resultStr = getObjectString(result);
                     }
 
-                    if (resultStr.length() > 1000) {
+                    if (resultStr.length() > ApplicationConstants.Monitoring.DEFAULT_MAX_RESPONSE_SIZE_IN_LOG) {
                         resultStr = resultStr.substring(0, 997) + "...";
                     }
 

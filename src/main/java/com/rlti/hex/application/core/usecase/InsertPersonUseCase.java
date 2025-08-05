@@ -2,6 +2,7 @@ package com.rlti.hex.application.core.usecase;
 
 import com.rlti.hex.application.core.domain.Fisica;
 import com.rlti.hex.application.core.domain.event.PersonCreatedEvent;
+import com.rlti.hex.application.core.domain.messages.ErrorMessages;
 import com.rlti.hex.application.port.input.AddressEnrichmentInputPort;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.InsertPersonInputPort;
@@ -40,7 +41,7 @@ public class InsertPersonUseCase implements InsertPersonInputPort {
     @Override
     public Fisica insert(Fisica request) {
         if (findPersonOutputPort.exists(request.getCpf()))
-            throw new DuplicidadeException("Pessoa ja tem cadastro!");
+            throw new DuplicidadeException(ErrorMessages.Person.ALREADY_EXISTS);
 
         if (request.getAddresses() != null && !request.getAddresses().isEmpty()) {
             addressEnrichmentService.complementAddressesData(request.getAddresses());

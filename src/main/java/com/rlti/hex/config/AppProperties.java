@@ -1,5 +1,6 @@
 package com.rlti.hex.config;
 
+import com.rlti.hex.application.core.domain.constants.ApplicationConstants;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -41,7 +42,7 @@ public class AppProperties {
         /**
          * Tamanho máximo de resposta a ser logada.
          */
-        private int maxResponseSizeInLog = 1000;
+        private int maxResponseSizeInLog = ApplicationConstants.Monitoring.DEFAULT_MAX_RESPONSE_SIZE_IN_LOG;
 
         /**
          * Se deve mostrar stack traces completos nos logs.
@@ -60,7 +61,7 @@ public class AppProperties {
         /**
          * Tamanho máximo do cache.
          */
-        private long maxSize = 1000;
+        private long maxSize = ApplicationConstants.Monitoring.DEFAULT_MAX_SIZE;
     }
 
     @Getter
@@ -69,7 +70,7 @@ public class AppProperties {
         /**
          * Limite padrão para execução lenta em milissegundos.
          */
-        private long slowExecutionThresholdMs = 1000;
+        private long slowExecutionThresholdMs = ApplicationConstants.Monitoring.DEFAULT_SLOW_EXECUTION_THRESHOLD_MS;
 
         /**
          * Se deve logar automaticamente métodos lentos.

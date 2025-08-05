@@ -1,6 +1,8 @@
 package com.rlti.hex.application.core.usecase;
 
 import com.rlti.hex.application.core.domain.Address;
+import com.rlti.hex.application.core.domain.messages.ErrorMessages;
+import com.rlti.hex.application.core.domain.validation.ZipCodeValidator;
 import com.rlti.hex.application.core.usecase.config.UseCase;
 import com.rlti.hex.application.port.input.FindAddressByZipCodeInputPort;
 import com.rlti.hex.application.port.output.ValidateAddressOutputPort;
@@ -18,9 +20,11 @@ public class FindAddressByZipCodeUseCase implements FindAddressByZipCodeInputPor
 
     @Override
     public Address getAddressByZipCode(String zipCode) {
-        if (!validateAddressOutputPort.isValidZipCode(zipCode)) {
-            throw new IllegalArgumentException("Invalid zip code: " + zipCode);
+        if (!ZipCodeValidator.isValid(zipCode)) {
+            throw new IllegalArgumentException(String.format(ErrorMessages.ZipCode.INVALID_FORMAT, zipCode));
         }
-        return validateAddressOutputPort.validateAndCompleteAddress(zipCode);
+        
+        String normalizedZipCode = ZipCodeValidator.normalize(zipCode);
+        return validateAddressOutputPort.validateAndCompleteAddress(normalizedZipCode);
     }
 }

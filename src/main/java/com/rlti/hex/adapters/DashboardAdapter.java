@@ -3,6 +3,7 @@ package com.rlti.hex.adapters;
 import com.rlti.hex.adapters.input.api.response.CityStats;
 import com.rlti.hex.adapters.input.api.response.MonthlyStats;
 import com.rlti.hex.adapters.output.repository.*;
+import com.rlti.hex.application.core.domain.constants.ApplicationConstants;
 import com.rlti.hex.application.port.output.DashboardOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,7 @@ public class DashboardAdapter implements DashboardOutputPort {
 
     @Override
     public long countRecentPersons() {
-        return fisicaJpaRepository.countByCreatedAtAfter(LocalDate.now().minusDays(30));
+        return fisicaJpaRepository.countByCreatedAtAfter(LocalDate.now().minusDays(ApplicationConstants.Dashboard.DEFAULT_RECENT_DAYS));
     }
 
     @Override

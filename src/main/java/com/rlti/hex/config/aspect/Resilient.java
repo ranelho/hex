@@ -1,5 +1,6 @@
 package com.rlti.hex.config.aspect;
 
+import com.rlti.hex.application.core.domain.constants.ApplicationConstants;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -20,5 +21,5 @@ public @interface Resilient {
     /**
      * Tempo máximo de execução em milissegundos.
      */
-    long timeoutInMs() default 1000;
+    long timeoutInMs() default ApplicationConstants.Resilience.DEFAULT_TIMEOUT_MS;
 }

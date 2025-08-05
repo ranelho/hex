@@ -48,6 +48,7 @@ public final class ApplicationConstants {
     public static final class Monitoring {
         public static final long DEFAULT_SLOW_EXECUTION_THRESHOLD_MS = 1000L;
         public static final int DEFAULT_MAX_RESPONSE_SIZE_IN_LOG = 1000;
+        public static final long DEFAULT_MAX_SIZE = 1000L;
         
         private Monitoring() {
             throw new UnsupportedOperationException("Utility class cannot be instantiated");
