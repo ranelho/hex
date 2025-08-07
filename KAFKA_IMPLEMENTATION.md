@@ -120,7 +120,8 @@ KAFKA_TOPIC_PERSON_CREATED_PROD=person-created-prod
 
 ### 2. Subir a Infraestrutura
 ```bash
-docker-compose up -d
+docker-compose -f docker-compose-kafka.yml up -d
+
 ```
 
 ### 3. Verificar Serviços

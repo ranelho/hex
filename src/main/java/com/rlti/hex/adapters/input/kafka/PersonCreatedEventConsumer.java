@@ -17,22 +17,19 @@ public class PersonCreatedEventConsumer {
 
     @KafkaListener(
         topics = "${kafka.topics.person-created:person-created}",
-        groupId = "${spring.kafka.consumer.group-id:hex-group}",
-        containerFactory = "kafkaListenerContainerFactory"
+        groupId = "${spring.kafka.consumer.group-id:hex-group}"
     )
     public void handlePersonCreatedEvent(
             @Payload PersonCreatedEvent event,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
             @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
-            @Header(KafkaHeaders.OFFSET) long offset,
-            Acknowledgment acknowledgment
+            @Header(KafkaHeaders.OFFSET) long offset
     ) {
         try {
             log.info("Received person created event from topic: {}, partition: {}, offset: {}, personId: {}", 
                 topic, partition, offset, event.getPersonId());
             
             processPersonCreatedEvent(event);
-            acknowledgment.acknowledge();
             
             log.info("Successfully processed person created event for person ID: {}", event.getPersonId());
             
